@@ -37,6 +37,10 @@ module.exports = (appInfo) => {
                 headerName: 'x-csrf-token',
                 bodyName: 'x-csrf-token'
             }
+        },
+        // jwt 配置
+        jwt: {
+            secret: '9527'
         }
     })
 
