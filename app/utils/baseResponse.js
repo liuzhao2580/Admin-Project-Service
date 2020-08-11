@@ -8,7 +8,7 @@ module.exports = (data, errorMsg) => {
     let responseData = {}
     if (data.length > 0) {
         responseData = {
-            data,
+            data: data[0],
             code: 0
         }
     } else {

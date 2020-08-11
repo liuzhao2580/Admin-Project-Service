@@ -40,7 +40,8 @@ module.exports = (appInfo) => {
         },
         // jwt 配置
         jwt: {
-            secret: '9527'
+            secret: '9527',
+            ignore: '/login'
         }
     })
 
@@ -48,7 +49,7 @@ module.exports = (appInfo) => {
     config.keys = appInfo.name + '_1597025430002_7949'
 
     // add your middleware config here
-    config.middleware = []
+    config.middleware = ['jwt']
 
     // add your user config here
     const userConfig = {

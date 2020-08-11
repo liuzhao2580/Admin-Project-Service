@@ -11,16 +11,16 @@ class UserController extends Controller {
             let data = await this.service.user.userLogin(params)
             // 如果查询到数据就生成 token
             if(data.length > 0) {
-                const token = app.jwt.sign({
-                    username: 'liuzhao2580'
-                }, app.config.jwt.secret)
+                const token = ctx.helper.setToken({user: 111})
                 data[0].token = `${token}`
+                ctx.session.token = token
             }
             ctx.body = baseResponse(data, '用户名或密码错误')
         } catch (error) {
             console.log(error)
         }
     }
+    // 获取用户基本信息
 }
 
 module.exports = UserController
