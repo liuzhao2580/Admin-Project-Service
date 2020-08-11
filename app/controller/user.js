@@ -11,7 +11,7 @@ class UserController extends Controller {
             let data = await this.service.user.userLogin(params)
             // 如果查询到数据就生成 token
             if(data.length > 0) {
-                const token = ctx.helper.setToken({user: 111})
+                const token = ctx.helper.setToken({userId: data[0].userId})
                 data[0].token = `${token}`
                 ctx.session.token = token
             }
