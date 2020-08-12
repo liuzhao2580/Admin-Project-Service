@@ -41,7 +41,7 @@ module.exports = (appInfo) => {
         // jwt 配置
         jwt: {
             secret: '9527',
-            ignore: '/login'
+            match: '/api'
         }
     })
 
