@@ -5,11 +5,5 @@ module.exports = {
     mysql: {
         enable: true,
         package: 'egg-mysql',
-    },
-    // jwt: {
-    //     enable: true,
-    //     package: 'egg-jwt',
-    //     // 哪些请求不需要认证
-    //     ignore: '/login'
-    // }
+    }
 }

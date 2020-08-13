@@ -1,10 +1,3 @@
-/* eslint valid-jsdoc: "off" */
-
-'use strict'
-
-/**
- * @param {Egg.EggAppInfo} appInfo app info
- */
 module.exports = (appInfo) => {
     /**
      * built-in config
@@ -41,6 +34,7 @@ module.exports = (appInfo) => {
         // jwt 配置
         jwt: {
             secret: '9527',
+            // 只要是 /api 开头的接口都需要校验 token 是否有效
             match: '/api'
         }
     })
@@ -48,7 +42,7 @@ module.exports = (appInfo) => {
     // use for cookie sign key, should change to your own and keep security
     config.keys = appInfo.name + '_1597025430002_7949'
 
-    // add your middleware config here
+    // 中间件添加
     config.middleware = ['jwt']
 
     // add your user config here

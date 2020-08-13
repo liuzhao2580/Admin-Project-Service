@@ -13,8 +13,11 @@ class UserController extends Controller {
             if (data.length > 0) {
                 const token = ctx.helper.setToken({ userId: data[0].userId })
                 data[0].token = `${token}`
+                ctx.body = baseResponse(data[0], 0)
             }
-            ctx.body = baseResponse(data, '用户名或密码错误')
+            else {
+                ctx.body = baseResponse(data, 100, '用户名或密码错误')
+            }
         } catch (error) {
             console.log(error)
         }
@@ -28,12 +31,12 @@ class UserController extends Controller {
         try {
             const data = await this.service.user.userInfo(params)
             if (data.length > 0) {
-                ctx.body = baseResponse(data)
+                ctx.body = baseResponse(data[0], 0)
             } else {
-                ctx.body = baseResponse(data, '没有该用户')
+                ctx.body = baseResponse(data, 100, '没有该用户')
             }
         } catch (error) {
-            console.log(error, 1111)
+            return {}
         }
     }
 }
