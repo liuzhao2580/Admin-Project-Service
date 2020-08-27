@@ -31,6 +31,7 @@ async validateFunc() {
 }
 ```
 
+
 ## 约定
 #### token
 1. `code === 50001` 说明 `token` 失效或者错误，需要重新登录
