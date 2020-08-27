@@ -39,6 +39,22 @@ class UserController extends Controller {
             return {}
         }
     }
+    // 更新用户信息
+    async patch_updateUser() {
+        const {ctx} = this
+        try {
+            ctx.validate({
+                id: {
+                    required: true
+                }
+            })
+        } catch (error) {
+            ctx.body = {
+                code: 100,
+                error: error.errors
+            }
+        }
+    }
 }
 
 module.exports = UserController

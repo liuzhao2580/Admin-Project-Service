@@ -3,4 +3,6 @@ module.exports = app => {
     app.router.post('/login',app.controller.user.post_userLogin)
     // 获取用户信息
     app.router.get('/api/userInfo/:id', app.controller.user.get_userInfo)
+    // 更新用户信息
+    app.router.patch('/api/updateUser',app.controller.user.patch_updateUser)
 }
