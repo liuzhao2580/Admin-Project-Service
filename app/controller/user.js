@@ -1,3 +1,5 @@
+const { data_success, no_data_failed, data_failed } = require('../utils/reponse_data')
+
 const Controller = require('egg').Controller
 
 class UserController extends Controller {
@@ -11,12 +13,10 @@ class UserController extends Controller {
             if (data.length > 0) {
                 const token = ctx.helper.setToken({ userId: data[0].userId })
                 data[0].token = `${token}`
-                ctx.body = ctx.helper.baseResponse(0 ,'请求成功', data[0])
-            } else {
-                ctx.body = ctx.helper.baseResponse(100, '用户名或密码错误')
-            }
+                ctx.body = data_success(data[0])
+            } else ctx.body = no_data_failed(100, '用户名或密码错误')
         } catch (error) {
-            console.log(error)
+            ctx.body = data_failed(100, error)
         }
     }
     // 获取用户基本信息
@@ -27,13 +27,10 @@ class UserController extends Controller {
         }
         try {
             const data = await service.user.userInfo(params)
-            if (data.length > 0) {
-                ctx.body = ctx.helper.baseResponse(0, '请求成功', data[0])
-            } else {
-                ctx.body = ctx.helper.baseResponse(100, '没有该用户')
-            }
+            if (data.length > 0) ctx.body = data_success(data[0])
+            else ctx.body = no_data_failed(100 , '没有该用户')
         } catch (error) {
-            return {}
+            ctx.body = data_failed(100, error)
         }
     }
     // 更新用户信息
@@ -67,30 +64,13 @@ class UserController extends Controller {
             if (data.length > 0) {
                 const updateParams = ctx.request.body
                 const updateStatus = await service.user.updateUserInfo(updateParams)
-                if (updateStatus == 1) {
-                    ctx.body = {
-                        code: 0,
-                        msg: '更新成功'
-                    }
-                } else {
-                    ctx.body = {
-                        code: 101,
-                        msg: '更新失败'
-                    }
-                }
+                if (updateStatus == 1) ctx.body = no_data_success('更新成功')
+                else ctx.body = no_data_failed(101, '更新失败')
             }
             // 说明该用户不存在
-            else {
-                ctx.body = {
-                    code: 100,
-                    msg: '该用户不存在'
-                }
-            }
+            else ctx.body = no_data_failed(101, '该用户不存在')
         } catch (error) {
-            ctx.body = {
-                code: 101,
-                error: error.errors
-            }
+            ctx.body = data_failed(100, error.errors)
         }
     }
 }
