@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50541
 File Encoding         : 65001
 
-Date: 2020-08-27 17:40:44
+Date: 2020-08-28 15:25:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,19 +22,40 @@ DROP TABLE IF EXISTS `article`;
 CREATE TABLE "article" (
   "id" int(11) NOT NULL AUTO_INCREMENT,
   "article_title" varchar(255) NOT NULL COMMENT '文章标题',
-  "article_context" text COMMENT '文章内容',
+  "article_content" text COMMENT '文章内容',
   "article_time" datetime DEFAULT NULL COMMENT '文章创建时间',
-  "article_update_time" timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '文章更新时间',
+  "article_update_time" timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '文章更新时间',
   "creator_id" varchar(255) DEFAULT NULL COMMENT '创建该文章的用户id',
-  "article_category" int(10) NOT NULL DEFAULT '1' COMMENT '文章类别',
+  "article_category" int(2) NOT NULL DEFAULT '1' COMMENT '文章类别的id',
   "is_delete" int(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY ("id")
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article
 -- ----------------------------
-INSERT INTO `article` VALUES ('1', '测试', '这是一个测试的标题', null, '2020-08-27 17:20:56', '1', '1', '0');
+INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-08-28 15:24:32', '1', '1', '0');
+INSERT INTO `article` VALUES ('2', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-08-28 10:23:22', '2020-08-28 15:00:24', '1', '1', '0');
+
+-- ----------------------------
+-- Table structure for article_category
+-- ----------------------------
+DROP TABLE IF EXISTS `article_category`;
+CREATE TABLE "article_category" (
+  "id" int(11) NOT NULL AUTO_INCREMENT,
+  "category" varchar(50) DEFAULT NULL,
+  "level" int(2) DEFAULT NULL COMMENT '分类的级别 1 代表一级 2 代表二级',
+  "parent_id" int(2) DEFAULT NULL COMMENT '父级的id，为null说明是顶级',
+  PRIMARY KEY ("id")
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of article_category
+-- ----------------------------
+INSERT INTO `article_category` VALUES ('1', '生活娱乐', '1', null);
+INSERT INTO `article_category` VALUES ('2', '体育财经', '1', null);
+INSERT INTO `article_category` VALUES ('3', '科技文艺', '1', null);
+INSERT INTO `article_category` VALUES ('4', '影视动漫', '1', null);
 
 -- ----------------------------
 -- Table structure for article_comment
@@ -115,6 +136,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE "user" (
   "userId" int(11) NOT NULL AUTO_INCREMENT COMMENT '用户的id',
   "userName" varchar(255) NOT NULL DEFAULT '' COMMENT '用户名',
+  "user_role" int(2) DEFAULT '1' COMMENT '角色权限',
   "passWord" varchar(255) NOT NULL COMMENT '密码',
   "nickName" varchar(255) DEFAULT NULL COMMENT '昵称',
   "gender" bit(1) DEFAULT b'1' COMMENT '性别 1代表 男  0代表女',
@@ -128,7 +150,7 @@ CREATE TABLE "user" (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'liuzhao', '123456', '小火车况且况且', '', '13288888888', '132@163.com', '2020-08-27 16:54:08', '0');
+INSERT INTO `user` VALUES ('1', 'liuzhao', '1', '123456', '小火车况且况且', '', '13288888888', '132@163.com', '2020-08-27 16:54:08', '0');
 
 -- ----------------------------
 -- Table structure for user_role
