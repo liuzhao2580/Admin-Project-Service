@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2020-08-31 17:59:09
+Date: 2020-09-04 17:18:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,7 +23,7 @@ CREATE TABLE `article` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `article_title` varchar(255) NOT NULL COMMENT '文章标题',
   `article_content` text COMMENT '文章内容',
-  `article_time` datetime DEFAULT NULL COMMENT '文章创建时间',
+  `article_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '文章创建时间',
   `article_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '文章更新时间',
   `creator_id` varchar(255) DEFAULT NULL COMMENT '创建该文章的用户id',
   `article_category` int(2) NOT NULL DEFAULT '1' COMMENT '文章类别的id',
@@ -34,7 +34,7 @@ CREATE TABLE `article` (
 -- ----------------------------
 -- Records of article
 -- ----------------------------
-INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-08-28 15:24:32', '1', '1', '0');
+INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-09-03 10:01:02', '1', '1', '0');
 INSERT INTO `article` VALUES ('2', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-08-28 10:23:22', '2020-08-28 15:00:24', '1', '1', '0');
 
 -- ----------------------------
@@ -47,7 +47,7 @@ CREATE TABLE `article_category` (
   `level` int(2) DEFAULT NULL COMMENT '分类的级别 1 代表一级 2 代表二级',
   `parent_id` int(2) DEFAULT NULL COMMENT '父级的id，为null说明是顶级',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_category
@@ -56,6 +56,30 @@ INSERT INTO `article_category` VALUES ('1', '生活娱乐', '1', null);
 INSERT INTO `article_category` VALUES ('2', '体育财经', '1', null);
 INSERT INTO `article_category` VALUES ('3', '科技文艺', '1', null);
 INSERT INTO `article_category` VALUES ('4', '影视动漫', '1', null);
+INSERT INTO `article_category` VALUES ('5', '游戏', '2', '1');
+INSERT INTO `article_category` VALUES ('6', '穿搭', '2', '1');
+INSERT INTO `article_category` VALUES ('7', '时尚', '2', '1');
+INSERT INTO `article_category` VALUES ('8', '养生', '2', '1');
+INSERT INTO `article_category` VALUES ('9', '旅游', '2', '1');
+INSERT INTO `article_category` VALUES ('10', '宠物', '2', '1');
+INSERT INTO `article_category` VALUES ('11', '星座', '2', '1');
+INSERT INTO `article_category` VALUES ('12', '钓鱼', '2', '2');
+INSERT INTO `article_category` VALUES ('13', '财经', '2', '2');
+INSERT INTO `article_category` VALUES ('14', '体育', '2', '2');
+INSERT INTO `article_category` VALUES ('15', 'NBA', '2', '2');
+INSERT INTO `article_category` VALUES ('16', '股票', '2', '2');
+INSERT INTO `article_category` VALUES ('17', '彩票', '2', '2');
+INSERT INTO `article_category` VALUES ('18', '手机', '2', '3');
+INSERT INTO `article_category` VALUES ('19', '摄影', '2', '3');
+INSERT INTO `article_category` VALUES ('20', '电脑', '2', '3');
+INSERT INTO `article_category` VALUES ('21', '动物', '2', '3');
+INSERT INTO `article_category` VALUES ('22', '动作', '2', '4');
+INSERT INTO `article_category` VALUES ('23', '都市', '2', '4');
+INSERT INTO `article_category` VALUES ('24', '武侠', '2', '4');
+INSERT INTO `article_category` VALUES ('25', '科幻', '2', '4');
+INSERT INTO `article_category` VALUES ('26', '生活', '2', '4');
+INSERT INTO `article_category` VALUES ('27', '动作', '3', '5');
+INSERT INTO `article_category` VALUES ('28', '冒险', '3', '5');
 
 -- ----------------------------
 -- Table structure for article_comment

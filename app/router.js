@@ -8,4 +8,6 @@ module.exports = (app) => {
     require('./router/user')(app)
     // 文章
     require('./router/article')(app)
+    // 类别
+    require('./router/category')(app)
 }
