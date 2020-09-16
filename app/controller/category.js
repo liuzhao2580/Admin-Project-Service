@@ -3,7 +3,7 @@ const { data_success, no_data_failed, no_data_success } = require('../utils/repo
 const Controller = require('egg').Controller
 
 class Category extends Controller {
-    // 获取所有部门 按照树形结构
+    // 获取所有文章类别 按照树形结构 表 article_category 把类别都集中在一个表中
     async get_category() {
         const { ctx, service } = this
         const result = await service.category.select_category()
@@ -62,6 +62,26 @@ class Category extends Controller {
             respon_data = type_looper(result)
         }
         ctx.body = data_success(respon_data)
+    }
+    // 获取所有文章类别，按照树形结构 多表 不同级别的类别存放在不同的表中
+    async get_moreTable_category() {
+        const {service, ctx} = this
+        const result = await service.category.select_moreTableCategory()
+        let result_arr = []
+        if(result.length > 0) {
+            // typeArr 查询到的数组 
+            function type_looper(typeArr, first_id) {
+                // 查询最外层的数据
+                const first_typeArr = typeArr.filter(item => item.first_id == first_id)
+            }
+            result_arr = result.filter(item => {
+                return result.filter(items => {
+                    return item.first_id == items.first_id
+                })
+            })
+            console.log(result_arr, 1111)
+        }
+        ctx.body = data_success(result)
     }
 }
 

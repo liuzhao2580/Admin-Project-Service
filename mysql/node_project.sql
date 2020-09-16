@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2020-09-04 17:18:41
+Date: 2020-09-16 17:58:25
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,7 +29,7 @@ CREATE TABLE `article` (
   `article_category` int(2) NOT NULL DEFAULT '1' COMMENT '文章类别的id',
   `is_delete` int(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article
@@ -47,7 +47,7 @@ CREATE TABLE `article_category` (
   `level` int(2) DEFAULT NULL COMMENT '分类的级别 1 代表一级 2 代表二级',
   `parent_id` int(2) DEFAULT NULL COMMENT '父级的id，为null说明是顶级',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_category
@@ -106,7 +106,7 @@ CREATE TABLE `article_first_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` varchar(255) DEFAULT '' COMMENT '文章类别',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_first_category
@@ -115,6 +115,7 @@ INSERT INTO `article_first_category` VALUES ('1', '生活娱乐');
 INSERT INTO `article_first_category` VALUES ('2', '体育财经');
 INSERT INTO `article_first_category` VALUES ('3', '科技文艺');
 INSERT INTO `article_first_category` VALUES ('4', '影视动漫');
+INSERT INTO `article_first_category` VALUES ('5', '其他');
 
 -- ----------------------------
 -- Table structure for article_sec_category
@@ -125,7 +126,7 @@ CREATE TABLE `article_sec_category` (
   `category` varchar(255) DEFAULT '' COMMENT '二级文章分类名称',
   `parent_id` int(10) DEFAULT NULL COMMENT '一级分类的id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_sec_category
@@ -135,7 +136,7 @@ INSERT INTO `article_sec_category` VALUES ('2', '时尚', '1');
 INSERT INTO `article_sec_category` VALUES ('3', '养生', '1');
 INSERT INTO `article_sec_category` VALUES ('4', '旅游', '1');
 INSERT INTO `article_sec_category` VALUES ('5', '宠物', '1');
-INSERT INTO `article_sec_category` VALUES ('6', '星座', '1');
+INSERT INTO `article_sec_category` VALUES ('6', '游戏', '1');
 INSERT INTO `article_sec_category` VALUES ('7', '钓鱼', '2');
 INSERT INTO `article_sec_category` VALUES ('8', '财经', '2');
 INSERT INTO `article_sec_category` VALUES ('9', '体育', '2');
@@ -152,6 +153,25 @@ INSERT INTO `article_sec_category` VALUES ('19', '科学', '3');
 INSERT INTO `article_sec_category` VALUES ('20', '文化', '3');
 INSERT INTO `article_sec_category` VALUES ('21', '影视', '4');
 INSERT INTO `article_sec_category` VALUES ('22', '动漫', '4');
+
+-- ----------------------------
+-- Table structure for article_third_category
+-- ----------------------------
+DROP TABLE IF EXISTS `article_third_category`;
+CREATE TABLE `article_third_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(50) NOT NULL,
+  `parent_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of article_third_category
+-- ----------------------------
+INSERT INTO `article_third_category` VALUES ('1', '动作', '6');
+INSERT INTO `article_third_category` VALUES ('2', '冒险', '6');
+INSERT INTO `article_third_category` VALUES ('3', '海贼王', '22');
+INSERT INTO `article_third_category` VALUES ('4', '火影忍者', '22');
 
 -- ----------------------------
 -- Table structure for user
