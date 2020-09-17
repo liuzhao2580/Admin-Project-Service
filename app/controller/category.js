@@ -65,23 +65,58 @@ class Category extends Controller {
     }
     // 获取所有文章类别，按照树形结构 多表 不同级别的类别存放在不同的表中
     async get_moreTable_category() {
-        const {service, ctx} = this
+        const { service, ctx } = this
         const result = await service.category.select_moreTableCategory()
         let result_arr = []
-        if(result.length > 0) {
-            // typeArr 查询到的数组 
-            function type_looper(typeArr, first_id) {
-                // 查询最外层的数据
-                const first_typeArr = typeArr.filter(item => item.first_id == first_id)
-            }
-            result_arr = result.filter(item => {
-                return result.filter(items => {
-                    return item.first_id == items.first_id
+        if (result.length > 0) {
+            // 用来记录当前的索引，从-1开始
+            let times = -1
+            result.forEach((item) => {
+                const getArr = result_arr.find((result_item) => {
+                    return item.first_id == result_item.id
                 })
+                // 说明找到了相符的数据，代表是子节点，需要push
+                if (getArr) {
+                    result_arr[times].children.push({
+                        id: `${item.first_id}-${item.sec_id}`,
+                        category: item.sec_category
+                    })
+                }
+                // 说明没找到相符的数据，代表是根节点，同时还需要把 times自增+1
+                else {
+                    times++
+                    // 说明存在二级节点
+                    if (item.sec_id) {
+                        result_arr.push({
+                            id: item.first_id,
+                            category: item.first_category,
+                            children: [
+                                {
+                                    id: `${item.first_id}-${item.sec_id}`,
+                                    category: item.sec_category
+                                }
+                            ]
+                        })
+                    }
+                    // 说明不存在二级节点
+                    else {
+                        result_arr.push({
+                            id: item.first_id,
+                            category: item.first_category
+                        })
+                    }
+                }
             })
-            console.log(result_arr, 1111)
         }
-        ctx.body = data_success(result)
+        ctx.body = data_success(result_arr)
+    }
+    // 获取文章类别，按照懒加载的形式
+    async lazy_category() {
+        const {service, ctx} = this
+        const params = ctx.request.body
+        console.log(params, 1111)
+        const result_arr = await service.category.select_first_category(params)
+        ctx.body = data_success(result_arr)
     }
 }
 
