@@ -1,4 +1,4 @@
-const { data_success, no_data_failed, no_data_success } = require('../utils/reponse_data')
+const { data_success } = require('../utils/reponse_data')
 
 const Controller = require('egg').Controller
 
@@ -114,8 +114,7 @@ class Category extends Controller {
     async lazy_category() {
         const {service, ctx} = this
         const params = ctx.request.body
-        console.log(params, 1111)
-        const result_arr = await service.category.select_first_category(params)
+        const result_arr = await service.category.select_lazy_category(params)
         ctx.body = data_success(result_arr)
     }
 }

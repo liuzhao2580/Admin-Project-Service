@@ -26,19 +26,27 @@ class CategoryService extends Service {
     }
 
     // 获取文章类别，按照懒加载的形式
-    async select_first_category(params_id) {
+    async select_lazy_category(params) {
         const {app} = this
         let result = null
-        // 说明获取下级节点的类别
-        if(params_id) {
-            const params = {
-                where: params_id
-            }
-            result = await app.mysql.select('article_sec_category', params)
+        // id 传递的节点id  level 传递的级别， 默认为1 ，代表根节点 level == 2 代表二级节点
+        const {id,level} = params
+        const query_params = {
+            where: +id
         }
-        // 说明获取文章的第一类别
-        else {
-            result = await app.mysql.select('article_first_category')
+        switch (Number(level)) {
+            // 二级节点
+            case 2:
+                result = await app.mysql.select('article_sec_category', query_params)
+                break;
+            // 三级节点
+            case 3:
+                result = await app.mysql.select('article_third_category', query_params)
+                break;
+            // 说明获取文章的 根节点
+            default:
+                result = await app.mysql.select('article_first_category')
+                break;
         }
         return result
     }
