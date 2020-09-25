@@ -1,4 +1,4 @@
-const { data_success } = require('../utils/reponse_data')
+const { data_success, no_data_failed } = require('../utils/reponse_data')
 
 const Controller = require('egg').Controller
 
@@ -112,10 +112,11 @@ class Category extends Controller {
     }
     // 获取文章类别，按照懒加载的形式
     async lazy_category() {
-        const {service, ctx} = this
+        const {service, ctx, acv} = this
         const params = ctx.request.body
         const result_arr = await service.category.select_lazy_category(params)
-        ctx.body = data_success(result_arr)
+        if(result_arr.length > 0) ctx.body = data_success(result_arr)
+        else ctx.body = no_data_failed(101, '未找到数据')
     }
 }
 

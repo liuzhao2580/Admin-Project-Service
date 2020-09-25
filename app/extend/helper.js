@@ -7,6 +7,11 @@ module.exports = {
     // 解密 token
     verifyToken(data) {
         const getToken = data.split('Bearer ')[1]
-        return jwt.verify(getToken, this.app.config.jwt.secret)
+        return jwt.verify(getToken, this.app.config.jwt.secret, (err, decoded)=> {
+            return new Promise((resolve,reject) => {
+                if(err) reject(err)
+                else resolve(decoded)
+            })
+        })
     }
 }

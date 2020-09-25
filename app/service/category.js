@@ -32,7 +32,7 @@ class CategoryService extends Service {
         // id 传递的节点id  level 传递的级别， 默认为1 ，代表根节点 level == 2 代表二级节点
         const {id,level} = params
         const query_params = {
-            where: +id
+            where: {parent_id: id}
         }
         switch (Number(level)) {
             // 二级节点
