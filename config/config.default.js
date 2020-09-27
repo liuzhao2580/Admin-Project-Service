@@ -36,6 +36,10 @@ module.exports = (appInfo) => {
             secret: '9527',
             // 只要是 /api 开头的接口都需要校验 token 是否有效
             match: '/api'
+        },
+        multipart: {
+            fileSize: "5mb",
+            mode: 'file',
         }
     })
 

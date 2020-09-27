@@ -31,6 +31,17 @@ class UserService extends Service {
         const updateStatus = await app.mysql.update('user', updateParams, options)
         return updateStatus.affectedRows
     }
+    // 上传用户头像
+    async uploadUser(params) {
+        const {app} = this
+        const {userId} = params
+        const row = {
+            userId,
+            avatar
+        }
+        const result = await app.mysql.update('user', row)
+        return result
+    }
 }
 
 module.exports = UserService

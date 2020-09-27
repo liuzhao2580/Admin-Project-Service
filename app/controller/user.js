@@ -2,6 +2,9 @@ const { data_success, no_data_failed, data_failed } = require('../utils/reponse_
 
 const Controller = require('egg').Controller
 
+const path = require("path")
+const fs = require("fs")
+
 class UserController extends Controller {
     // 用户登录
     async post_userLogin() {
@@ -72,6 +75,22 @@ class UserController extends Controller {
         } catch (error) {
             ctx.body = data_failed(100, error.errors)
         }
+    }
+    // 用户上传头像
+    async post_upload() {
+        const {ctx, service} = this
+        // 获取用户 id
+        const userId = ctx.request.body
+        if(!userId) return ctx.body = no_data_failed(100, '用户id不能为空')
+        // 获取上传的文件
+        const getFile = ctx.request.files[0]
+        fs.rename(getFile.filepath, path.join(__dirname, '../upload_file'), (err) => {
+            console.log(err, 1111)
+        })
+        // console.log(getFile, 1111)
+        
+        // 清除上传的文件缓存
+        // ctx.cleanupRequestFiles()
     }
 }
 
