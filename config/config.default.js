@@ -1,4 +1,4 @@
-module.exports = (appInfo) => {
+module.exports = appInfo => {
     /**
      * built-in config
      * @type {Egg.EggAppConfig}
@@ -47,7 +47,7 @@ module.exports = (appInfo) => {
     config.keys = appInfo.name + '_1597025430002_7949'
 
     // 中间件添加
-    config.middleware = ['jwt']
+    config.middleware = [ 'jwt' ]
 
     // add your user config here
     const userConfig = {

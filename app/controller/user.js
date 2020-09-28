@@ -1,5 +1,5 @@
-const { data_success, no_data_failed, data_failed } = require('../utils/reponse_data')
-
+const { data_success, no_data_failed, data_failed, no_data_success } = require('../utils/reponse_data')
+const {nowTimeMinutes} = require("../utils/timeFormat")
 const Controller = require('egg').Controller
 
 const path = require("path")
@@ -11,7 +11,7 @@ class UserController extends Controller {
         const { ctx, service } = this
         const params = ctx.request.body
         try {
-            let data = await service.user.userLogin(params)
+            const data = await service.user.userLogin(params)
             // 如果查询到数据就生成 token
             if (data.length > 0) {
                 const token = ctx.helper.setToken({ userId: data[0].userId })
@@ -25,13 +25,13 @@ class UserController extends Controller {
     // 获取用户基本信息
     async get_userInfo() {
         const { ctx, service } = this
-        let params = {
+        const params = {
             userId: ctx.params.id
         }
         try {
             const data = await service.user.userInfo(params)
             if (data.length > 0) ctx.body = data_success(data[0])
-            else ctx.body = no_data_failed(100 , '没有该用户')
+            else ctx.body = no_data_failed(100, '没有该用户')
         } catch (error) {
             ctx.body = data_failed(100, error)
         }
@@ -78,19 +78,20 @@ class UserController extends Controller {
     }
     // 用户上传头像
     async post_upload() {
-        const {ctx, service} = this
+        const { ctx, service } = this
         // 获取用户 id
-        const userId = ctx.request.body
-        if(!userId) return ctx.body = no_data_failed(100, '用户id不能为空')
+        const {userId} = ctx.request.body
+        if (!userId) return ctx.body = no_data_failed(100, '用户id不能为空')
         // 获取上传的文件
         const getFile = ctx.request.files[0]
-        fs.rename(getFile.filepath, path.join(__dirname, '../upload_file'), (err) => {
-            console.log(err, 1111)
-        })
-        // console.log(getFile, 1111)
-        
+        const arr = getFile.filename.split(".")
+        const suffix = arr[arr.length - 1]
+        const setFileName = `${userId}_${nowTimeMinutes()}.${suffix}`
+        const readFileData = fs.readFileSync(getFile.filepath)
+        fs.writeFileSync(path.join(__dirname, `../public/upload/avatar/${setFileName}`),readFileData)
+        ctx.body = no_data_success('文件上传成功')
         // 清除上传的文件缓存
-        // ctx.cleanupRequestFiles()
+        ctx.cleanupRequestFiles()
     }
 }
 
