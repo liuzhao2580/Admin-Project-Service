@@ -6,5 +6,5 @@ module.exports = app => {
     // 更新用户信息
     app.router.patch('/api/updateUser',app.controller.user.patch_updateUser)
     // 用户上传头像
-    app.router.post("/api/user/upload",app.controller.user.post_upload)
+    app.router.post("/api/user/upload",app.controller.user.post_upload_avatar)
 }

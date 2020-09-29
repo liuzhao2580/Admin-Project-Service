@@ -77,19 +77,29 @@ class UserController extends Controller {
         }
     }
     // 用户上传头像
-    async post_upload() {
+    async post_upload_avatar() {
         const { ctx, service } = this
         // 获取用户 id
         const {userId} = ctx.request.body
         if (!userId) return ctx.body = no_data_failed(100, '用户id不能为空')
         // 获取上传的文件
         const getFile = ctx.request.files[0]
+        console.log(getFile, 1111)
         const arr = getFile.filename.split(".")
         const suffix = arr[arr.length - 1]
         const setFileName = `${userId}_${nowTimeMinutes()}.${suffix}`
-        const readFileData = fs.readFileSync(getFile.filepath)
-        fs.writeFileSync(path.join(__dirname, `../public/upload/avatar/${setFileName}`),readFileData)
-        ctx.body = no_data_success('文件上传成功')
+        // 文件路径
+        const taskFileUrl = path.join(__dirname, `../public/upload/avatar/`, setFileName)
+        // const getReadStream = fs.createReadStream(getFile.filepath)
+        // const getWriteStream = fs.createWriteStream(path.join(__dirname, `../public/upload/avatar/`, setFileName))
+        // getReadStream.pipe(getWriteStream)
+        try {
+            const readFileData = fs.readFileSync(getFile.filepath)
+            fs.writeFileSync(taskFileUrl,readFileData)
+            ctx.body = no_data_success('头像上传成功')
+        } catch (error) {
+           console.log(error, 'error') 
+        }
         // 清除上传的文件缓存
         ctx.cleanupRequestFiles()
     }
