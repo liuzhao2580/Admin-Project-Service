@@ -1,5 +1,4 @@
 const { data_success, no_data_failed, data_failed, no_data_success } = require('../utils/reponse_data')
-const {nowTimeMinutes} = require("../utils/timeFormat")
 const Controller = require('egg').Controller
 
 const path = require("path")
@@ -78,25 +77,38 @@ class UserController extends Controller {
     }
     // 用户上传头像
     async post_upload_avatar() {
-        const { ctx, service } = this
+        const { ctx, service, app } = this
         // 获取用户 id
         const {userId} = ctx.request.body
         if (!userId) return ctx.body = no_data_failed(100, '用户id不能为空')
         // 获取上传的文件
         const getFile = ctx.request.files[0]
-        console.log(getFile, 1111)
         const arr = getFile.filename.split(".")
         const suffix = arr[arr.length - 1]
-        const setFileName = `${userId}_${nowTimeMinutes()}.${suffix}`
+        const setFileName = `${userId}.${suffix}`
         // 文件路径
         const taskFileUrl = path.join(__dirname, `../public/upload/avatar/`, setFileName)
         // const getReadStream = fs.createReadStream(getFile.filepath)
         // const getWriteStream = fs.createWriteStream(path.join(__dirname, `../public/upload/avatar/`, setFileName))
         // getReadStream.pipe(getWriteStream)
+        // 1. 首先获取avatar目录下的所有图片
+        const getAllAvatar = fs.readdirSync(path.join(__dirname, `../public/upload/avatar/`))
+        // 2. 找到当前的用户之前上传过的头像
+        const getUserIdAvatar = getAllAvatar.find(item => item.split(".")[0] == userId)
+        // 3. 如果存在图片就删除
+        if(getUserIdAvatar) fs.unlinkSync(path.join(__dirname, `../public/upload/avatar/`, getUserIdAvatar))
+        // 4. 不然就说明没有，存入新的图片
         try {
             const readFileData = fs.readFileSync(getFile.filepath)
             fs.writeFileSync(taskFileUrl,readFileData)
-            ctx.body = no_data_success('头像上传成功')
+            const getAvatarUrl = `${ctx.host}/public/upload/avatar/${setFileName}`
+            const params = {
+                userId,
+                avatar: getAvatarUrl
+            }
+            const result = await service.user.uploadUserAvatar(params)
+            if(result.affectedRows == 1) ctx.body = no_data_success('头像上传成功')
+            else ctx.body = no_data_failed(100, '头像上传失败')
         } catch (error) {
            console.log(error, 'error') 
         }

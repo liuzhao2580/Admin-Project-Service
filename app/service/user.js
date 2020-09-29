@@ -32,14 +32,18 @@ class UserService extends Service {
         return updateStatus.affectedRows
     }
     // 上传用户头像
-    async uploadUser(params) {
+    async uploadUserAvatar(params) {
         const {app} = this
-        const {userId} = params
+        const {userId, avatar} = params
         const row = {
-            userId,
             avatar
         }
-        const result = await app.mysql.update('user', row)
+        const options = {
+            where: {
+                userId
+            }
+        }
+        const result = await app.mysql.update('user', row, options)
         return result
     }
 }

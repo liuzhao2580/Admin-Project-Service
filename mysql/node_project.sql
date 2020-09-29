@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2020-09-16 17:58:25
+Date: 2020-09-29 17:44:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,7 +34,7 @@ CREATE TABLE `article` (
 -- ----------------------------
 -- Records of article
 -- ----------------------------
-INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-09-03 10:01:02', '1', '1', '0');
+INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-09-23 14:03:08', '1', '1', '0');
 INSERT INTO `article` VALUES ('2', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-08-28 10:23:22', '2020-08-28 15:00:24', '1', '1', '0');
 
 -- ----------------------------
@@ -181,6 +181,7 @@ CREATE TABLE `user` (
   `userId` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户的id',
   `userName` varchar(255) NOT NULL DEFAULT '' COMMENT '用户名',
   `user_role` int(2) DEFAULT '1' COMMENT '角色权限',
+  `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像地址',
   `passWord` varchar(255) NOT NULL COMMENT '密码',
   `nickName` varchar(255) DEFAULT NULL COMMENT '昵称',
   `gender` bit(1) DEFAULT b'1' COMMENT '性别 1代表 男  0代表女',
@@ -194,7 +195,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'liuzhao', '1', '123456', '小火车况且况且', '', '13288888888', '132@163.com', '2020-08-27 16:54:08', '0');
+INSERT INTO `user` VALUES ('1', 'liuzhao', '1', '127.0.0.1:7001/public/upload/avatar/1.png', '123456', '小火车况且况且', '', '13288888888', '132@163.com', '2020-09-29 17:35:23', '0');
 
 -- ----------------------------
 -- Table structure for user_role
