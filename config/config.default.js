@@ -28,7 +28,12 @@ module.exports = appInfo => {
         security: {
             csrf: {
                 headerName: 'x-csrf-token',
-                bodyName: 'x-csrf-token'
+                bodyName: 'x-csrf-token',
+                // 忽略登录请求开启CSRF
+                ignore: ctx=> {
+                    if(ctx.request.url == '/login') return true
+                    else return false
+                }
             }
         },
         // jwt 配置
