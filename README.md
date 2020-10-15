@@ -39,3 +39,17 @@ async validateFunc() {
 ## 注意 
 #### [关于安全的措施](https://eggjs.org/zh-cn/core/security.html)
 1. 在使用`eggJS`发送请求的时候，除了`GET`请求之外，其他的请求在发送之前都需要携带`x-csrf-token`,获取的方式是在发送请求之前在`cookies`中获取
+2. 设置当登录的时候不需要携带`x-csrf-token` ，在`config/config.default.js`文件中
+```js
+security: {
+    csrf: {
+        headerName: 'x-csrf-token',
+        bodyName: 'x-csrf-token',
+        // 忽略登录请求开启CSRF
+        ignore: ctx=> {
+            if(ctx.request.url == '/login') return true
+            else return false
+        }
+    }
+}
+```
