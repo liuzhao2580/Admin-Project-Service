@@ -26,11 +26,9 @@ class UserController extends Controller {
     // 获取用户基本信息
     async get_userInfo() {
         const { ctx, service } = this
-        const params = {
-            userId: ctx.params.id
-        }
+        const userId = ctx.params.id
         try {
-            const data = await service.user.userInfo(params)
+            const data = await service.user.userInfo(userId)
             if (data.length > 0) ctx.body = data_success(data[0])
             else ctx.body = no_data_failed(100, '没有该用户')
         } catch (error) {

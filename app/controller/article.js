@@ -118,6 +118,25 @@ class ArticleController extends Controller {
         if(result.affectedRows == 1) ctx.body = no_data_success('删除成功')
         else ctx.body = no_data_failed(101,'删除失败')
     }
+    // 添加文章评论
+    async post_articleCommentInsert() {
+        const {ctx,service} = this
+        try {
+            ctx.validate({
+                comment_userId: {required: true,type: 'int',convertType: 'int'},
+                comment_article_id: {required: true,type: 'int',convertType: 'int'},
+                comment_content: {required: true,type: 'string',}
+            })
+            const params = ctx.request.body
+            let result = await service.article.articleComment_insert(params)
+            // 说明 用户不存在 或者 文章不存在
+            if(result.code === 104) ctx.body = data_failed(result.code, result.msg)
+            if(result.affectedRows == 1) ctx.body = no_data_success('评论成功')
+            else ctx.body = no_data_failed(101,'评论失败')
+        } catch (error) {
+            ctx.body = data_failed(100, error)
+        }
+    }
 }
 
 module.exports = ArticleController

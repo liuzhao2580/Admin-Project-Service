@@ -13,7 +13,12 @@ class UserService extends Service {
     // 获取用户信息
     async userInfo(params) {
         const { app } = this
-        let userInfo = await app.mysql.select('user', { where: params })
+        const userWhere = {
+            where: {
+                userId: params
+            }
+        }
+        let userInfo = await app.mysql.select('user', userWhere)
         if (userInfo.length > 0) {
             delete userInfo[0].passWord
         }

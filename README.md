@@ -19,7 +19,7 @@ async validateFunc() {
     const {ctx} = this
     try {
         ctx.validate({
-            id: {required: true}
+            id: {required: true, type: 'int'}
         })
     }
     catch(err) {

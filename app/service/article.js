@@ -58,6 +58,19 @@ class ArticleService extends Service {
         const result = await app.mysql.update('article',row , options)
         return result
     }
+    // 添加文章评论
+    async articleComment_insert(params) {
+        const {app, service} = this
+        let result
+        const articleFlag = await this.article_query(params.comment_article_id)
+        const userFlag = await service.user.userInfo(params.comment_userId)
+        if(articleFlag.length == 0) result = {code: 104, msg: '该文章不存在'}
+        else if(userFlag.length == 0) result = {code: 104, msg: '该用户不存在'}
+        else {
+            result = await app.mysql.insert('article_comment',params)
+        }
+        return result
+    }
 }
 
 module.exports = ArticleService

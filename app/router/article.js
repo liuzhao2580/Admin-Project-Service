@@ -9,4 +9,6 @@ module.exports = app =>{
     app.router.patch('/api/article/update', app.controller.article.patch_articleUpdate)
     // 删除文章
     app.router.delete('/api/article/delete/:id', app.controller.article.delete_articleDelete)
+    // 添加文章评论
+    app.router.post('/api/articleComment/insert',app.controller.article.post_articleCommentInsert)
 }
