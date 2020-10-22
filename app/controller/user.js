@@ -3,6 +3,7 @@ const Controller = require('egg').Controller
 
 const path = require("path")
 const fs = require("fs")
+const { throws } = require('assert')
 
 class UserController extends Controller {
     // 用户登录
@@ -16,7 +17,8 @@ class UserController extends Controller {
                 const token = ctx.helper.setToken({ userId: data[0].userId })
                 data[0].token = `${token}`
                 // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-                ctx.rotateCsrfSecret();
+                ctx.rotateCsrfSecret()
+                new throws()
                 ctx.body = data_success(data[0])
             } else ctx.body = no_data_failed(100, '用户名或密码错误')
         } catch (error) {
