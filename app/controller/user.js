@@ -18,7 +18,6 @@ class UserController extends Controller {
                 data[0].token = `${token}`
                 // 调用 rotateCsrfSecret 刷新用户的 CSRF token
                 ctx.rotateCsrfSecret()
-                new throws()
                 ctx.body = data_success(data[0])
             } else ctx.body = no_data_failed(100, '用户名或密码错误')
         } catch (error) {
