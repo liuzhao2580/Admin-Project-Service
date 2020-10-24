@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2020-09-29 17:44:59
+Date: 2020-10-24 17:38:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,13 +29,15 @@ CREATE TABLE `article` (
   `article_category` int(2) NOT NULL DEFAULT '1' COMMENT '文章类别的id',
   `is_delete` int(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article
 -- ----------------------------
-INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-09-23 14:03:08', '1', '1', '0');
+INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-10-15 14:55:07', '1', '1', '1');
 INSERT INTO `article` VALUES ('2', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-08-28 10:23:22', '2020-08-28 15:00:24', '1', '1', '0');
+INSERT INTO `article` VALUES ('3', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-10-15 14:55:07', '2020-10-15 14:55:07', '1', '1', '0');
+INSERT INTO `article` VALUES ('4', '小火车况且况且', '测试文章修改', '2020-10-15 14:55:10', '2020-10-15 14:55:10', '1', '1', '0');
 
 -- ----------------------------
 -- Table structure for article_category
@@ -90,13 +92,14 @@ CREATE TABLE `article_comment` (
   `comment_content` text NOT NULL,
   `comment_article_id` int(11) NOT NULL COMMENT '评论的文章id',
   `comment_userId` int(11) NOT NULL COMMENT '评论人的userId',
-  `is_delete` int(1) NOT NULL DEFAULT '0',
+  `comment_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '评论的时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_comment
 -- ----------------------------
+INSERT INTO `article_comment` VALUES ('1', '132113', '2', '122', '2020-10-20 17:14:48');
 
 -- ----------------------------
 -- Table structure for article_first_category
