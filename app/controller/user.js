@@ -1,17 +1,44 @@
 const { data_success, no_data_failed, data_failed, no_data_success } = require('../utils/reponse_data')
 const Controller = require('egg').Controller
+const SVGcaptcha = require("svg-captcha")
 
 const path = require("path")
 const fs = require("fs")
-const { throws } = require('assert')
 
 class UserController extends Controller {
+    // 返回图片验证码
+    async get_picVeriCode() {
+        const {ctx} = this
+        const getCode = SVGcaptcha.create()
+        ctx.session.picode = getCode.text
+        ctx.body = await data_success(getCode.data,'请求成功')
+    }
     // 用户登录
     async post_userLogin() {
         const { ctx, service } = this
         const params = ctx.request.body
+        const {userName, password} = params
         try {
-            const data = await service.user.userLogin(params)
+            ctx.validate({
+                userName: {
+                    required: true,
+                    type: 'string'
+                },
+                password: {
+                    required: true,
+                    type: 'string',
+                    convertType: 'string'
+                },
+                code: {
+                    required:true,
+                    type: 'string',
+                    convertType: 'string'
+                }
+            })
+            const data = await service.user.userLogin({userName, password})
+            const tran_userCode = params.code.toLocaleUpperCase()
+            const get_sessionCode = ctx.session.picode.toLocaleUpperCase()
+            if(tran_userCode !== get_sessionCode) return ctx.body = no_data_failed(100, '验证码错误')
             // 如果查询到数据就生成 token
             if (data.length > 0) {
                 const token = ctx.helper.setToken({ userId: data[0].userId })
@@ -19,7 +46,8 @@ class UserController extends Controller {
                 // 调用 rotateCsrfSecret 刷新用户的 CSRF token
                 ctx.rotateCsrfSecret()
                 ctx.body = data_success(data[0])
-            } else ctx.body = no_data_failed(100, '用户名或密码错误')
+            }
+            else ctx.body = no_data_failed(100, '用户名或密码错误')
         } catch (error) {
             ctx.body = data_failed(100, error)
         }

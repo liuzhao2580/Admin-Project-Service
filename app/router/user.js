@@ -1,4 +1,6 @@
 module.exports = app => {
+    // 获取图片验证码
+    app.router.get('/pictureCode', app.controller.user.get_picVeriCode)
     // 用户登录
     app.router.post('/login',app.controller.user.post_userLogin)
     // 获取用户信息
