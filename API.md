@@ -44,7 +44,6 @@
 | -------- | ------ | -------- |
 | userName | string | 是       |
 | password | any    | 是       |
-| code     | string | 是       |
 
 - 返回数据
 

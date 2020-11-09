@@ -1,17 +1,14 @@
 const { data_success, no_data_failed, data_failed, no_data_success } = require('../utils/reponse_data')
 const Controller = require('egg').Controller
-const SVGcaptcha = require("svg-captcha")
 
 const path = require("path")
 const fs = require("fs")
 
 class UserController extends Controller {
-    // 返回图片验证码
-    async get_picVeriCode() {
+    // 获取 csrf-token 发送一条随机请求
+    async gainCsrfToken() {
         const {ctx} = this
-        const getCode = SVGcaptcha.create()
-        ctx.session.picode = getCode.text
-        ctx.body = await data_success(getCode.data,'请求成功')
+        ctx.body = await no_data_success()
     }
     // 用户登录
     async post_userLogin() {
@@ -36,9 +33,6 @@ class UserController extends Controller {
                 }
             })
             const data = await service.user.userLogin({userName, password})
-            const tran_userCode = params.code.toLocaleUpperCase()
-            const get_sessionCode = ctx.session.picode.toLocaleUpperCase()
-            if(tran_userCode !== get_sessionCode) return ctx.body = no_data_failed(100, '验证码错误')
             // 如果查询到数据就生成 token
             if (data.length > 0) {
                 const token = ctx.helper.setToken({ userId: data[0].userId })
