@@ -6,7 +6,7 @@ const fs = require("fs")
 
 class UserController extends Controller {
     // 获取 csrf-token 发送一条随机请求
-    async gainCsrfToken() {
+    async CSRFToken() {
         const {ctx} = this
         ctx.body = await no_data_success()
     }
