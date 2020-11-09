@@ -25,11 +25,6 @@ class UserController extends Controller {
                     required: true,
                     type: 'string',
                     convertType: 'string'
-                },
-                code: {
-                    required:true,
-                    type: 'string',
-                    convertType: 'string'
                 }
             })
             const data = await service.user.userLogin({userName, password})
