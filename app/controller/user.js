@@ -107,6 +107,9 @@ class UserController extends Controller {
         if (!userId) return ctx.body = no_data_failed(100, '用户id不能为空')
         // 获取上传的文件
         const getFile = ctx.request.files[0]
+        // 匹配图像类型
+        let typeReg = /(\.jpg|\.png|\.jpeg)$/i
+        if(!typeReg.test(getFile.filename)) return ctx.body = no_data_failed(100, '上传的文件只能是jpg png jpeg 后缀的')
         const arr = getFile.filename.split(".")
         const suffix = arr[arr.length - 1]
         const setFileName = `${userId}.${suffix}`
