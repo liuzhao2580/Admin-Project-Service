@@ -64,8 +64,7 @@ class UserController extends Controller {
                 },
                 phone: {
                     required: false,
-                    type: 'number',
-                    convertType: 'number'
+                    type: 'phone'
                 },
                 nickName: {
                     required: false,
