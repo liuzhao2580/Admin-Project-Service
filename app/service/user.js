@@ -15,9 +15,7 @@ class UserService extends Service {
     async userInfo(params) {
         const { app } = this
         const userWhere = {
-            where: {
-                userId: params
-            }
+            where: params
         }
         let userInfo = await app.mysql.select('user', userWhere)
         if (userInfo.length > 0) {
@@ -35,6 +33,7 @@ class UserService extends Service {
                 userId
             }
         }
+        console.log(updateParams, 'updateParams')
         const updateStatus = await app.mysql.update('user', updateParams, options)
         return updateStatus.affectedRows
     }
@@ -52,6 +51,21 @@ class UserService extends Service {
         }
         const result = await app.mysql.update('user', row, options)
         return result
+    }
+    // 查看该用户名是否存在
+    async checkUserName(params) {
+        const { app } = this
+        const userWhere = {
+            where: params
+        }
+        const userInfo = await app.mysql.select('user', userWhere)
+        return userInfo
+    }
+    // 新增用户
+    async insertUser(params) {
+        const { app } = this
+        const insertStatus = await app.mysql.insert('user', params)
+        return insertStatus.affectedRows
     }
 }
 
