@@ -63,18 +63,24 @@ class UserController extends Controller {
                     type: 'string'
                 },
                 phone: {
+                    required: false,
                     type: 'number',
                     convertType: 'number'
                 },
                 nickName: {
+                    required: false,
                     type: 'string',
                     convertType: 'string'
                 },
                 gender: {
+                    required: false,
                     type: 'number',
                     convertType: 'number'
                 },
-                email: 'email'
+                email: {
+                    required: false,
+                    type: 'email'
+                }
             })
             const params = {
                 userId: ctx.request.body.userId
