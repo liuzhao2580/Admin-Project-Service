@@ -40,7 +40,7 @@ module.exports = appInfo => {
         jwt: {
             secret: '9527',
             // 只要是 /api 开头的接口都需要校验 token 是否有效
-            match: '/api'
+            match:/\/api/
         },
         // 文件上传 multipart 配置
         multipart: {
