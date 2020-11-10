@@ -1,4 +1,3 @@
-const path = require('path')
 const validate = require('./app/utils/vaildata')
 class AppBootHook {
     constructor(app) {
