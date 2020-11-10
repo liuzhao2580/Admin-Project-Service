@@ -84,10 +84,10 @@
 
 + 请求地址： `/login`
 
-    | 请求参数 | 类型   | 是否必须 |
-    | -------- | ------ | :------- |
-    | userName | string | 是       |
-    | password | any    | 是       |
+    | 请求参数   | 类型     | 是否必须 |
+    | ---------- | -------- | :------- |
+    | `userName` | `string` | 是       |
+    | `password` | `any`    | 是       |
 
 + 返回数据
 
@@ -157,17 +157,18 @@
 
 - 请求方式： `PATCH`
 
-+ 请求地址：`/api/updateUser`
++ 请求地址：`/api/user/update`
 
 + 请求参数
 
-    | 请求参数   | 类型     | 是否必须 |
-    | ---------- | -------- | -------- |
-    | `userId`   | `number` | 是       |
-    | `phone`    | `number` | 否       |
-    | `nickName` | `string` | 否       |
-    | `gender`   | `number` | 否       |
-    | `email`    | `email`  | 否       |
+    | 请求参数    | 类型     | 是否必须 |
+    | ----------- | -------- | -------- |
+    | `userId`    | `number` | 是       |
+    | `user_role` | `number` | 是       |
+    | `phone`     | `number` | 否       |
+    | `nickName`  | `string` | 否       |
+    | `gender`    | `number` | 否       |
+    | `email`     | `email`  | 否       |
 
 + 返回数据
 
@@ -178,7 +179,69 @@
     }
     ```
 
-### 1.4 用户上传头像
+### 1.4 检查用户名是否存在
+
++ 请求方式： `POST`
+
++ 请求地址：`/api/user/checkUserName`
+
++ 请求参数
+
+    | 请求参数   | 类型     | 是否必须 |
+    | ---------- | -------- | -------- |
+    | `userName` | `string` | 是       |
+
++ 返回数据
+
+    ```js
+    {
+        "code": 0,
+        "msg": "该用户名已存在"
+    }
+    
+    {
+        "code": 0,
+        "msg": "该用户名不存在"
+    }
+    ```
+
+    
+
+### 1.5 新增用户
+
+- 请求方式：`POST`
+
+- 请求地址：`/api/user/insert`
+
+- 请求参数
+
+    | 请求参数    | 类型     | 是否必须 |
+    | ----------- | -------- | -------- |
+    | `userName`  | `string` | 是       |
+    | `password`  | `any`    | 是       |
+    | `user_role` | `number` | 是       |
+    | `phone`     | `number` | 否       |
+    | `nickName`  | `string` | 否       |
+    | `gender`    | `number` | 否       |
+    | `email`     | `email`  | 否       |
+
+- 返回数据
+
+    ```js
+    {
+        "code": 0,
+        "msg": "新增成功"
+    }
+    
+    {
+        "code": 101,
+        "msg": "新增失败 该用户名已存在"
+    }
+    ```
+
+    
+
+### 1.6 用户上传头像
 
 - 请求方式： `POST`
 
