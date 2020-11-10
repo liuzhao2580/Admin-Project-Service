@@ -15,7 +15,7 @@ module.exports = () => {
                 } catch (error) {
                     ctx.body = {
                         code: 50001,
-                        message: error.message
+                        msg: error.message
                     }
                     return 
                 }
@@ -24,14 +24,14 @@ module.exports = () => {
                 // 捕获项目代码的问题
                 ctx.body = {
                     code: 500,
-                    message: error.message
+                    msg: error.message
                 }
                 return
             }
         } else {
             ctx.body = {
                 code: 50001,
-                message: '没有token'
+                msg: '没有token'
             }
             return
         }
