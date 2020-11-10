@@ -7,6 +7,7 @@ class UserService extends Service {
         let userLoginInfo = await app.mysql.select('user', { where: params })
         if (userLoginInfo.length > 0) {
             delete userLoginInfo[0].passWord
+            delete userLoginInfo[0].is_delete
         }
         return userLoginInfo
     }
@@ -21,6 +22,7 @@ class UserService extends Service {
         let userInfo = await app.mysql.select('user', userWhere)
         if (userInfo.length > 0) {
             delete userInfo[0].passWord
+            delete userInfo[0].is_delete
         }
         return userInfo
     }
