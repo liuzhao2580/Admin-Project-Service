@@ -47,7 +47,7 @@ class UserController extends Controller {
     }
     // 获取用户基本信息
     async get_userInfo() {
-        const { ctx, service } = this 
+        const { ctx, service } = this
         const params = {
             userId : ctx.params.id
         }
@@ -160,7 +160,7 @@ class UserController extends Controller {
         try {
             const readFileData = fs.readFileSync(getFile.filepath)
             fs.writeFileSync(taskFileUrl, readFileData)
-            const getAvatarUrl = `${ctx.host}/public/upload/avatar/${setFileName}`
+            const getAvatarUrl = `http://${ctx.host}/public/upload/avatar/${setFileName}`
             const params = {
                 userId,
                 avatar: getAvatarUrl
