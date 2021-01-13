@@ -31,7 +31,8 @@ module.exports = appInfo => {
                 bodyName: 'x-csrf-token',
                 // 忽略登录请求开启CSRF
                 ignore: ctx=> {
-                    if(ctx.request.url == '/v1/login') return true
+                    const reg = /\/login$/
+                    if(reg.test(ctx.request.url)) return true
                     else return false
                 }
             }
