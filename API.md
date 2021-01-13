@@ -30,7 +30,50 @@
     })
     ```
 
-5. 只要是`/api`开头的请求都需要校验`token`是否合法，如果返回的 `code`为50001 说明当前的 `token`不合法
+5. 只要是`/api`开头的请求都需要校验`token`是否合法，如果返回的 `code`为50001 说明当前的 `token`不合法，`config.default.js`设置`jwt`的匹配规则，如果匹配到`/login`结尾的请求，说明是登录，不需要校验`token`
+
+    ```js
+    module.exports = (appInfo) => {
+        /**
+         * built-in config
+         * @type {Egg.EggAppConfig}
+         **/
+        const config = (exports = {
+            ...
+            // jwt 配置
+            jwt: {
+                secret: '9527',
+                // 只要是 /api 开头的接口都需要校验 token 是否有效
+                match: (ctx) => {
+                    const loginReg = /\/login$/
+                    const apiReg = /\/api/
+                    if (loginReg.test(ctx.request.url)) return false
+                    else if (apiReg.test(ctx.request.url)) return true
+                }
+            }
+            ...
+        })
+    
+        // use for cookie sign key, should change to your own and keep security
+        config.keys = appInfo.name + '_1597025430002_7949'
+    
+        // 中间件添加
+        config.middleware = ['jwt', 'errorHandle']
+    
+        // add your user config here
+        const userConfig = {
+            // myAppName: 'egg',
+        }
+    
+        return {
+            ...config,
+            ...userConfig
+        }
+    }
+    
+    ```
+
+    
 
 6. 返回成功的数据`code = 0`
 
@@ -73,9 +116,9 @@
             ...config,
             ...userConfig
         }
-}
+    }
     ```
-    
+
     
 
 ## 1. 用户相关的请求
@@ -84,7 +127,7 @@
 
 + 请求方式： POST
 
-+ 请求地址： `/login`
++ 请求地址： `/api/login`
 
     | 请求参数   | 类型     | 是否必须 |
     | ---------- | -------- | :------- |
@@ -99,7 +142,7 @@
         "data": {
             "userId": 1,
             "userName": "liuzhao",
-            "user_role": 1,
+            "roleId": 1,
             "avatar": "127.0.0.1:7001/public/upload/avatar/1.png",
             "nickName": "小火车况且况且",
             "gender": 1,
@@ -118,7 +161,7 @@
     | ------------ | ------------------------------ | -------- |
     | `userId`     | 用户ID                         | `number` |
     | `userName`   | 用户名                         | `string` |
-    | `user_role`  | 用户权限，用来设置侧边栏的访问 | `number` |
+    | `roleId`     | 用户权限，用来设置侧边栏的访问 | `number` |
     | `avatar`     | 用户头像地址                   | `string` |
     | `nickName`   | 用户昵称                       | `string` |
     | `gender`     | 用户性别： 1 代表男 ，0 代表女 | `number` |

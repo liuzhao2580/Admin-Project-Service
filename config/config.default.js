@@ -1,4 +1,4 @@
-module.exports = appInfo => {
+module.exports = (appInfo) => {
     /**
      * built-in config
      * @type {Egg.EggAppConfig}
@@ -17,12 +17,12 @@ module.exports = appInfo => {
                 // 密码
                 password: 'root',
                 // 数据库名
-                database: 'node_project',
+                database: 'node_project'
             },
             // 是否加载到 app 上，默认开启
             app: true,
             // 是否加载到 agent 上，默认关闭
-            agent: false,
+            agent: false
         },
         // 安全配置 CSRF
         security: {
@@ -30,9 +30,9 @@ module.exports = appInfo => {
                 headerName: 'x-csrf-token',
                 bodyName: 'x-csrf-token',
                 // 忽略登录请求开启CSRF
-                ignore: ctx=> {
+                ignore: (ctx) => {
                     const reg = /\/login$/
-                    if(reg.test(ctx.request.url)) return true
+                    if (reg.test(ctx.request.url)) return true
                     else return false
                 }
             }
@@ -41,12 +41,17 @@ module.exports = appInfo => {
         jwt: {
             secret: '9527',
             // 只要是 /api 开头的接口都需要校验 token 是否有效
-            match:/\/api/
+            match: (ctx) => {
+                const loginReg = /\/login$/
+                const apiReg = /\/api/
+                if (loginReg.test(ctx.request.url)) return false
+                else if (apiReg.test(ctx.request.url)) return true
+            }
         },
         // 文件上传 multipart 配置
         multipart: {
-            fileSize: "5mb",
-            mode: 'file',
+            fileSize: '5mb',
+            mode: 'file'
         }
     })
 
@@ -54,7 +59,7 @@ module.exports = appInfo => {
     config.keys = appInfo.name + '_1597025430002_7949'
 
     // 中间件添加
-    config.middleware = [ 'jwt','errorHandle' ]
+    config.middleware = ['jwt', 'errorHandle']
 
     // add your user config here
     const userConfig = {

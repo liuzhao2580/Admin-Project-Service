@@ -2,7 +2,7 @@ module.exports = app => {
     // 获取 csrf-token 发送一条随机请求
     app.router.get('/CSRFToken', app.controller.user.CSRFToken)
     // 用户登录
-    app.router.post('/login',app.controller.user.post_userLogin)
+    app.router.post('/api/login',app.controller.user.post_userLogin)
     // 获取用户信息
     app.router.get('/api/userInfo/:id', app.controller.user.get_userInfo)
     // 更新用户信息
