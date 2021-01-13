@@ -37,9 +37,9 @@
 7. 封装了返回的数据形式`utils/response_data.js`
 
     - 不用返回数据的成功响应：`{code: 0, msg: 默认是 请求成功}`
-    - 不用返回数据的失败响应：`{code: 默认是100,code: 默认是 请求失败}`
-    - 需要返回数据的成功响应：`{code: 0, data: 需要返回的数据,code: 默认是 请求成功}`
-    - 需要返回数据的失败响应：`{code: 默认是100, data: 需要返回的数据,code: 默认是 请求失败}`
+    - 不用返回数据的失败响应：`{code: 默认是100,msg: 默认是 请求失败}`
+    - 需要返回数据的成功响应：`{code: 0, data: 需要返回的数据,msg: 默认是 请求成功}`
+    - 需要返回数据的失败响应：`{code: 默认是100, data: 需要返回的数据,msg: 默认是 请求失败}`
 
 8. 发送请求之前需要发送一个`GET`请求，用来获取`eggjs`的`csrf-token`
 
@@ -57,10 +57,12 @@
                     bodyName: 'x-csrf-token',
                     // 忽略登录请求开启CSRF
                     ignore: ctx=> {
-                        if(ctx.request.url == '/v1/login') return true
+                        const reg = /\/login$/
+                        if(reg.test(ctx.request.url)) return true
                         else return false
                     }
                 }
+                // csrf: { enable: false } 关闭 CSRF 安全设置
             },
         })
         // add your user config here
@@ -71,9 +73,9 @@
             ...config,
             ...userConfig
         }
-    }
+}
     ```
-
+    
     
 
 ## 1. 用户相关的请求
