@@ -154,7 +154,7 @@ class ArticleController extends Controller {
             function type_looper(data, up_data = [], level = 1) {
                 let get_category = []
                 // 上一级类别
-                const get_up_data = data.filter((item) => item.level == level)
+                const get_up_data = data.filter(item => item.level == level)
                 // 说明能找到相应的数据
                 if (get_up_data.length > 0) {
                     // 说明data 中还存在的下级类别
@@ -162,9 +162,9 @@ class ArticleController extends Controller {
                         // 首先获取的数据为下一级
                         const get_down_data = data.slice(get_up_data.length)
                         const respon_data = type_looper(get_down_data, get_up_data, level + 1)
-                        if (respon_data.some((item) => !item.parent_id)) get_category = respon_data
-                        up_data.forEach((up_item) => {
-                            const getFlag = respon_data.filter((down_item) => {
+                        if (respon_data.some(item => !item.parent_id)) get_category = respon_data
+                        up_data.forEach(up_item => {
+                            const getFlag = respon_data.filter(down_item => {
                                 return up_item.id == down_item.parent_id
                             })
                             if (getFlag.length > 0) {
@@ -181,8 +181,8 @@ class ArticleController extends Controller {
                     }
                     // 说明 当前的类别已经是最后的
                     else if (get_up_data.length == data.length) {
-                        up_data.forEach((up_item) => {
-                            const getFlag = get_up_data.filter((down_item) => {
+                        up_data.forEach(up_item => {
+                            const getFlag = get_up_data.filter(down_item => {
                                 return up_item.id == down_item.parent_id
                             })
                             if (getFlag.length > 0) {
@@ -212,8 +212,8 @@ class ArticleController extends Controller {
         if (result.length > 0) {
             // 用来记录当前的索引，从-1开始
             let times = -1
-            result.forEach((item) => {
-                const getArr = result_arr.find((result_item) => {
+            result.forEach(item => {
+                const getArr = result_arr.find(result_item => {
                     return item.first_id == result_item.id
                 })
                 // 说明找到了相符的数据，代表是子节点，需要push
@@ -254,10 +254,27 @@ class ArticleController extends Controller {
     // 获取文章类别，按照懒加载的形式
     async lazy_category() {
         const { service, ctx } = this
-        const params = ctx.request.body
-        const result_arr = await service.article.select_lazy_category(params)
-        if (result_arr.length > 0) ctx.body = data_success(result_arr)
-        else ctx.body = data_success([])
+        try {
+            const params = ctx.request.body
+            ctx.validate({
+                // 用户传递的节点id
+                id: {
+                    type: 'id',
+                    required: false
+                },
+                // 传递的级别
+                level: {
+                    type: 'int',
+                    required: true,
+                    convertType: 'int'
+                }
+            })
+            const result = await service.article.select_lazy_category(params)
+            if (result) ctx.body = data_success(result)
+            else ctx.body = data_success([])
+        } catch (error) {
+            ctx.body = data_failed(100, error.errors)
+        }
     }
     //--------------------------------------------文章分类---------------------------------------
 }

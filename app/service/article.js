@@ -104,10 +104,16 @@ class ArticleService extends Service {
         let result = null
         // id 传递的节点id  level 传递的级别， 默认为1 ，代表根节点 level == 2 代表二级节点
         const { id, level } = params
-        const query_params = {
-            where: { parent_id: id }
-        }
-        level ? level : 1
+        // 设置 级别的范围 最大三级 最小一级
+        const levelData = [1, 2, 3]
+        const getLevel = levelData.find(item => item === level)
+        const query_params = getLevel && id
+            ? {
+                  where: { parent_id: id }
+              }
+            : null
+        // 说明 level 存在 但是不在范围中
+        if (!getLevel) return result
         switch (Number(level)) {
             // 一级节点/根节点
             case 1:
@@ -121,8 +127,7 @@ class ArticleService extends Service {
             case 3:
                 result = await app.mysql.select('article_third_category', query_params)
                 break
-            default: 
-                result = []
+            default:
                 break
         }
         return result
