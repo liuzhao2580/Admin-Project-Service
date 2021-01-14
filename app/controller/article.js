@@ -43,11 +43,11 @@ class ArticleController extends Controller {
                     type: 'string',
                     required: true
                 },
-                // 文章类别
-                article_category: {
-                    type: 'int',
+                // 文章类别 id
+                article_categoryId: {
+                    type: 'string',
                     required: true,
-                    convertType: 'int'
+                    convertType: 'string'
                 }
             })
             const result = await service.article.article_insert(params)
@@ -147,7 +147,7 @@ class ArticleController extends Controller {
     // 获取所有文章类别 按照树形结构 表 article_category 把类别都集中在一个表中
     async get_category() {
         const { ctx, service } = this
-        const result = await service.category.select_category()
+        const result = await service.article.select_category()
         // 说明存在数据，需要将数据结构重构为树形
         let respon_data = []
         if (result.length > 0) {
@@ -207,7 +207,7 @@ class ArticleController extends Controller {
     // 获取所有文章类别，按照树形结构 多表 不同级别的类别存放在不同的表中
     async get_moreTable_category() {
         const { service, ctx } = this
-        const result = await service.category.select_moreTableCategory()
+        const result = await service.article.select_moreTableCategory()
         let result_arr = []
         if (result.length > 0) {
             // 用来记录当前的索引，从-1开始
@@ -220,7 +220,7 @@ class ArticleController extends Controller {
                 if (getArr) {
                     result_arr[times].children.push({
                         id: `${item.first_id}-${item.sec_id}`,
-                        category: item.sec_category
+                        article: item.sec_category
                     })
                 }
                 // 说明没找到相符的数据，代表是根节点，同时还需要把 times自增+1
@@ -230,11 +230,11 @@ class ArticleController extends Controller {
                     if (item.sec_id) {
                         result_arr.push({
                             id: item.first_id,
-                            category: item.first_category,
+                            article: item.first_category,
                             children: [
                                 {
                                     id: `${item.first_id}-${item.sec_id}`,
-                                    category: item.sec_category
+                                    article: item.sec_category
                                 }
                             ]
                         })
@@ -243,7 +243,7 @@ class ArticleController extends Controller {
                     else {
                         result_arr.push({
                             id: item.first_id,
-                            category: item.first_category
+                            article: item.first_category
                         })
                     }
                 }
@@ -255,9 +255,9 @@ class ArticleController extends Controller {
     async lazy_category() {
         const { service, ctx } = this
         const params = ctx.request.body
-        const result_arr = await service.category.select_lazy_category(params)
+        const result_arr = await service.article.select_lazy_category(params)
         if (result_arr.length > 0) ctx.body = data_success(result_arr)
-        else ctx.body = no_data_failed(101, '未找到数据')
+        else ctx.body = data_success([])
     }
     //--------------------------------------------文章分类---------------------------------------
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2020-10-24 17:38:04
+Date: 2021-01-14 17:30:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -107,7 +107,7 @@ INSERT INTO `article_comment` VALUES ('1', '132113', '2', '122', '2020-10-20 17:
 DROP TABLE IF EXISTS `article_first_category`;
 CREATE TABLE `article_first_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` varchar(255) DEFAULT '' COMMENT '文章类别',
+  `category_name` varchar(255) DEFAULT '' COMMENT '文章类别',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
@@ -126,7 +126,7 @@ INSERT INTO `article_first_category` VALUES ('5', '其他');
 DROP TABLE IF EXISTS `article_sec_category`;
 CREATE TABLE `article_sec_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` varchar(255) DEFAULT '' COMMENT '二级文章分类名称',
+  `category_name` varchar(255) DEFAULT '' COMMENT '二级文章分类名称',
   `parent_id` int(10) DEFAULT NULL COMMENT '一级分类的id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
@@ -163,7 +163,7 @@ INSERT INTO `article_sec_category` VALUES ('22', '动漫', '4');
 DROP TABLE IF EXISTS `article_third_category`;
 CREATE TABLE `article_third_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` varchar(50) NOT NULL,
+  `category_name` varchar(50) NOT NULL,
   `parent_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
@@ -183,22 +183,23 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `userId` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户的id',
   `userName` varchar(255) NOT NULL DEFAULT '' COMMENT '用户名',
-  `user_role` int(2) DEFAULT '1' COMMENT '角色权限',
+  `roleId` int(2) NOT NULL DEFAULT '1' COMMENT '角色权限',
   `avatar` varchar(255) DEFAULT NULL COMMENT '用户头像地址',
   `passWord` varchar(255) NOT NULL COMMENT '密码',
   `nickName` varchar(255) DEFAULT NULL COMMENT '昵称',
-  `gender` bit(1) DEFAULT b'1' COMMENT '性别 1代表 男  0代表女',
+  `gender` tinyint(1) DEFAULT '1' COMMENT '性别 1代表 男  0代表女',
   `phone` varchar(255) DEFAULT '' COMMENT '手机号',
   `email` char(30) DEFAULT NULL COMMENT '邮箱',
-  `createTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `createTime` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `is_delete` int(1) DEFAULT '0',
   PRIMARY KEY (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'liuzhao', '1', '127.0.0.1:7001/public/upload/avatar/1.png', '123456', '小火车况且况且', '', '13288888888', '132@163.com', '2020-09-29 17:35:23', '0');
+INSERT INTO `user` VALUES ('1', 'liuzhao', '1', 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-minions/ec902db0-3497-11eb-b997-9918a5dda011.jpg', '123456', '小火车况且况且', '1', '13288888888', '132@163.com', '2021-01-14 09:49:36', '0');
+INSERT INTO `user` VALUES ('2', 'admin', '2', 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-minions/94e4c280-349a-11eb-8ff1-d5dcf8779628.png', 'admin', '小飞机呼哧呼哧', '1', '', null, '2021-01-14 09:49:21', '0');
 
 -- ----------------------------
 -- Table structure for user_role
