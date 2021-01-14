@@ -4,7 +4,7 @@
  * @param {Egg.Application} app - egg application
  */
 module.exports = app => {
-    app.router.prefix('/v1')
+    app.router.prefix('/v1/api')
     // 用户
     require('./router/user')(app)
     // 文章
