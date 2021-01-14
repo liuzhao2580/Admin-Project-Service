@@ -42,7 +42,8 @@ module.exports = (appInfo) => {
             secret: '9527',
             // 只要是 /api 开头的接口都需要校验 token 是否有效
             match: (ctx) => {
-                const loginReg = /\/login$/
+                // 登录和获取CSRF的接口不需要检验token
+                const loginReg = /(\/login$)|(\/CSRFToken$)/
                 const apiReg = /\/api/
                 if (loginReg.test(ctx.request.url)) return false
                 else if (apiReg.test(ctx.request.url)) return true
