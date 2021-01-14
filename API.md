@@ -4,7 +4,7 @@
 
 1. 开发环境的运行地址`127.0.0.1:7001`
 
-2. 所有路由的前缀是`/v1`，完整的请求地址是`http://127.0.0.1/v1`
+2. 所有路由的前缀是`/v1/api`，完整的请求地址是`http://127.0.0.1/v1/api`
 
 3. 需要在请求头中添加`x-csrf-token`的标识为: `XCSRF:true`（大部分的`POST`请求都需要添加），从`cookies`中可以获取到
 
@@ -30,7 +30,7 @@
     })
     ```
 
-5. 只要是`/api`开头的请求都需要校验`token`是否合法，如果返回的 `code`为50001 说明当前的 `token`不合法，`config.default.js`设置`jwt`的匹配规则，如果匹配到`/login`结尾的请求，说明是登录，不需要校验`token`
+5. 只要是`/api`开头的请求都需要校验`token`是否合法，如果返回的 `code`为50001 说明当前的 `token`不合法，`config.default.js`设置`jwt`的匹配规则，如果匹配到`/login`和`/CSRFToken`结尾的请求，不需要校验`token`
 
     ```js
     module.exports = (appInfo) => {
@@ -45,7 +45,8 @@
                 secret: '9527',
                 // 只要是 /api 开头的接口都需要校验 token 是否有效
                 match: (ctx) => {
-                    const loginReg = /\/login$/
+                    // 登录和获取CSRF的接口不需要检验token
+                    const loginReg = /(\/login$)|(\/CSRFToken$)/
                     const apiReg = /\/api/
                     if (loginReg.test(ctx.request.url)) return false
                     else if (apiReg.test(ctx.request.url)) return true
@@ -127,7 +128,7 @@
 
 + 请求方式： POST
 
-+ 请求地址： `/api/login`
++ 请求地址： `/login`
 
     | 请求参数   | 类型     | 是否必须 |
     | ---------- | -------- | :------- |
@@ -174,7 +175,7 @@
 
 + 请求方式：`GET`
 
-+ 请求地址：`/api/userInfo/:id` 用户id
++ 请求地址：`/userInfo/:id` 用户id
 
 + 返回数据
 
@@ -202,7 +203,7 @@
 
 - 请求方式： `PATCH`
 
-+ 请求地址：`/api/user/update`
++ 请求地址：`/user/update`
 
 + 请求参数
 
@@ -228,7 +229,7 @@
 
 + 请求方式： `POST`
 
-+ 请求地址：`/api/user/checkUserName`
++ 请求地址：`/user/checkUserName`
 
 + 请求参数
 
@@ -256,7 +257,7 @@
 
 - 请求方式：`POST`
 
-- 请求地址：`/api/user/insert`
+- 请求地址：`/user/insert`
 
 - 请求参数
 
@@ -290,7 +291,7 @@
 
 - 请求方式： `POST`
 
-- 请求地址： `/api/user/upload`
+- 请求地址： `/user/upload`
 
 - 请求头设置： `form-data`
 
@@ -307,6 +308,95 @@
     {
         "code": 0,
         "msg": "头像上传成功"
+    }
+    ```
+
+    
+
+## 2.文章相关的请求
+
+### 2.1 文章列表
+
++ 请求方式：`GET`
+
++ 请求地址：`/article/list`
+
++ 请求参数
+
+    | 请求参数 | 参数说明 | 类型 | 是否必填 |
+    | -------- | -------- | ---- | -------- |
+    |          |          |      |          |
+    |          |          |      |          |
+    |          |          |      |          |
+
++ 返回数据
+
+    ```js
+    {
+        "code": 0,
+        "data": [
+            {
+                "id": 2,
+                "article_title": "小飞机呼哧呼哧",
+                "article_content": "小飞机呼哧呼哧",
+                "article_time": "2020-08-28T02:23:22.000Z",
+                "article_update_time": "2020-08-28T07:00:24.000Z",
+                "creator_id": "1",
+                "article_category": 1,
+                "is_delete": 0
+            },
+            {
+                "id": 3,
+                "article_title": "小飞机呼哧呼哧",
+                "article_content": "小飞机呼哧呼哧",
+                "article_time": "2020-10-15T06:55:07.000Z",
+                "article_update_time": "2020-10-15T06:55:07.000Z",
+                "creator_id": "1",
+                "article_category": 1,
+                "is_delete": 0
+            },
+            {
+                "id": 4,
+                "article_title": "小火车况且况且",
+                "article_content": "测试文章修改",
+                "article_time": "2020-10-15T06:55:10.000Z",
+                "article_update_time": "2020-10-15T06:55:10.000Z",
+                "creator_id": "1",
+                "article_category": 1,
+                "is_delete": 0
+            }
+        ],
+        "msg": "请求成功"
+    }
+    ```
+
+### 2.2 新增文章
+
++ 请求方式：`POST`
+
++ 请求地址：`/article/insert`
+
++ 请求参数
+
+    | 请求参数           | 参数说明 | 类型     | 是否必填 |
+    | ------------------ | -------- | -------- | -------- |
+    | `creator_id`       | 用户id   | `string` | 是       |
+    | `article_title`    | 文章标题 | `string` | 是       |
+    | `article_content`  | 文章内容 | `string` | 是       |
+    | `article_category` | 文章类别 | `string` | 是       |
+
++ 返回数据
+
+    ```js
+    // 失败的回调
+    {
+        code: 0,
+        msg: '新增成功'
+    }
+    // 成功的回调
+    {
+        code: 101,
+        msg: '新增失败'
     }
     ```
 

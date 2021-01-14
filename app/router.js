@@ -11,8 +11,6 @@ module.exports = app => {
     require('./router/dashboard')(app)
     // 文章
     require('./router/article')(app)
-    // 类别
-    require('./router/category')(app)
     // gadget 小工具接口
     require("./router/gadget")(app)
 }
