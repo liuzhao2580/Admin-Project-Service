@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2021-01-14 17:30:57
+Date: 2021-01-15 16:29:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,24 +20,27 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `article`;
 CREATE TABLE `article` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` varchar(60) NOT NULL,
   `article_title` varchar(255) NOT NULL COMMENT '文章标题',
   `article_content` text COMMENT '文章内容',
   `article_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '文章创建时间',
   `article_update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '文章更新时间',
   `creator_id` varchar(255) DEFAULT NULL COMMENT '创建该文章的用户id',
-  `article_category` int(2) NOT NULL DEFAULT '1' COMMENT '文章类别的id',
+  `article_categoryId` int(2) NOT NULL DEFAULT '1' COMMENT '文章类别的id',
+  `category_name` varchar(20) NOT NULL COMMENT '文章分类的名称',
+  `category_parentId` int(10) NOT NULL COMMENT '分类的父级id',
+  `category_parentName` varchar(20) DEFAULT NULL COMMENT '分类的父级名称',
   `is_delete` int(1) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article
 -- ----------------------------
-INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-10-15 14:55:07', '1', '1', '1');
-INSERT INTO `article` VALUES ('2', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-08-28 10:23:22', '2020-08-28 15:00:24', '1', '1', '0');
-INSERT INTO `article` VALUES ('3', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-10-15 14:55:07', '2020-10-15 14:55:07', '1', '1', '0');
-INSERT INTO `article` VALUES ('4', '小火车况且况且', '测试文章修改', '2020-10-15 14:55:10', '2020-10-15 14:55:10', '1', '1', '0');
+INSERT INTO `article` VALUES ('1', '小火车况且况且', '测试文章修改', '2020-08-28 08:59:38', '2020-10-15 14:55:07', '1', '1', '', '0', null, '1');
+INSERT INTO `article` VALUES ('2', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-08-28 10:23:22', '2020-08-28 15:00:24', '1', '1', '', '0', null, '0');
+INSERT INTO `article` VALUES ('3', '小飞机呼哧呼哧', '小飞机呼哧呼哧', '2020-10-15 14:55:07', '2020-10-15 14:55:07', '1', '1', '', '0', null, '0');
+INSERT INTO `article` VALUES ('4', '小火车况且况且', '测试文章修改', '2020-10-15 14:55:10', '2020-10-15 14:55:10', '1', '1', '', '0', null, '0');
 
 -- ----------------------------
 -- Table structure for article_category
@@ -125,11 +128,11 @@ INSERT INTO `article_first_category` VALUES ('5', '其他');
 -- ----------------------------
 DROP TABLE IF EXISTS `article_sec_category`;
 CREATE TABLE `article_sec_category` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `category_name` varchar(255) DEFAULT '' COMMENT '二级文章分类名称',
   `parent_id` int(10) DEFAULT NULL COMMENT '一级分类的id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of article_sec_category
