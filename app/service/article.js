@@ -1,4 +1,5 @@
 const Service = require('egg').Service
+const { createUUID } = require('../utils/tool')
 
 class ArticleService extends Service {
     // 文章列表 获取所有数据
@@ -31,7 +32,28 @@ class ArticleService extends Service {
     // 新增文章
     async article_insert(params) {
         const { app } = this
-        const result = await app.mysql.insert('article', params)
+        const id = createUUID()
+        const { category_parentId, article_categoryId } = params
+        // 跟节点的数据
+        const getParentCategory = await app.mysql.select('article_first_category', {
+            where: { id: category_parentId }
+        })
+        // 当前节点的数据
+        const getCategory = await app.mysql.select('article_sec_category', {
+            where: { parent_id: category_parentId, id: article_categoryId }
+        })
+        const insertParams = {
+            id,
+            ...params,
+            category_name: getCategory.category_name
+        }
+        console.log(insertParams, 'insertParams')
+        try {
+            const result = await app.mysql.insert('article', insertParams)
+        } catch (error) {
+            console.log(error, 'error')
+        }
+        console.log(result, 'result')
         return result
     }
     // 更新文章
@@ -106,12 +128,13 @@ class ArticleService extends Service {
         const { id, level } = params
         // 设置 级别的范围 最大三级 最小一级
         const levelData = [1, 2, 3]
-        const getLevel = levelData.find(item => item === level)
-        const query_params = getLevel && id
-            ? {
-                  where: { parent_id: id }
-              }
-            : null
+        const getLevel = levelData.find((item) => item === level)
+        const query_params =
+            getLevel && id
+                ? {
+                      where: { parent_id: id }
+                  }
+                : null
         // 说明 level 存在 但是不在范围中
         if (!getLevel) return result
         switch (Number(level)) {

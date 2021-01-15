@@ -1,3 +1,4 @@
+const { v1: uuidv1 } = require('uuid')
 /** 小工具合集 */
 module.exports = {
     /** 1. 生成随机数
@@ -21,5 +22,10 @@ module.exports = {
             whileTime++
         }
         return returnData
+    },
+    /** 2.生成 UUID */
+    createUUID() {
+        const getUUID = uuidv1().replace(/-/g,'')
+        return getUUID
     }
 }

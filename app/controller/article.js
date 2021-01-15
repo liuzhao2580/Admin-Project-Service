@@ -48,6 +48,12 @@ class ArticleController extends Controller {
                     type: 'string',
                     required: true,
                     convertType: 'string'
+                },
+                // 类别的父级 id
+                category_parentId: {
+                    type: 'string',
+                    required: true,
+                    convertType: 'string'
                 }
             })
             const result = await service.article.article_insert(params)

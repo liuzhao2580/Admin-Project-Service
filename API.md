@@ -383,7 +383,8 @@
     | `creator_id`         | 用户id        | `string` | 是       |
     | `article_title`      | 文章标题      | `string` | 是       |
     | `article_content`    | 文章内容      | `string` | 是       |
-    | `article_categoryId` | 文章类别 `id` | `string` | 是       |
+    | `article_categoryId` | 文章类别 `id` | `number` | 是       |
+    | category_parentId    | 父级节点的id  | number   | 是       |
 
 + 返回数据
 
