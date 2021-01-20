@@ -1,11 +1,11 @@
-import { Service } from 'egg';
-
+/* tslint：disable-next-line */
+import { Service } from 'egg'
 export default class UserService extends Service {
-    
     // 用户登录
     async userLogin(params) {
         const { app } = this
-        let userLoginInfo = await app.config.mysql.select('user', { where: params })
+        // @ts-ignore: Unreachable code error
+        let userLoginInfo = await app.mysql.select('user', { where: params })
         if (userLoginInfo.length > 0) {
             delete userLoginInfo[0].passWord
             delete userLoginInfo[0].is_delete
@@ -40,8 +40,8 @@ export default class UserService extends Service {
     }
     // 上传用户头像
     async uploadUserAvatar(params) {
-        const {app} = this
-        const {userId, avatar} = params
+        const { app } = this
+        const { userId, avatar } = params
         const row = {
             avatar
         }
@@ -68,6 +68,4 @@ export default class UserService extends Service {
         const insertStatus = await app.config.mysql.insert('user', params)
         return insertStatus.affectedRows
     }
-
 }
-

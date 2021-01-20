@@ -1,10 +1,5 @@
 import { Controller } from 'egg'
-const {
-    data_success,
-    no_data_failed,
-    data_failed,
-    no_data_success
-} = require('../utils/reponse_data')
+import { data_success, no_data_failed, data_failed, no_data_success } from '../utils/reponse_data'
 
 const path = require('path')
 const fs = require('fs')
@@ -42,7 +37,7 @@ export default class UserController extends Controller {
                 ctx.body = data_success(data[0])
             } else ctx.body = no_data_failed(100, '用户名或密码错误')
         } catch (error) {
-            console.log(error, "")
+            console.log(error, '')
             ctx.body = data_failed(100, error)
         }
     }
@@ -134,7 +129,7 @@ export default class UserController extends Controller {
         // 1. 首先获取avatar目录下的所有图片
         const getAllAvatar = fs.readdirSync(path.join(__dirname, `../public/upload/avatar/`))
         // 2. 找到当前的用户之前上传过的头像
-        const getUserIdAvatar = getAllAvatar.find(item => item.split('.')[0] == userId)
+        const getUserIdAvatar = getAllAvatar.find((item) => item.split('.')[0] == userId)
         // 3. 如果存在图片就删除
         if (getUserIdAvatar)
             fs.unlinkSync(path.join(__dirname, `../public/upload/avatar/`, getUserIdAvatar))

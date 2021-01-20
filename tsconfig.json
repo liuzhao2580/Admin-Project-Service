@@ -4,7 +4,7 @@
     "target": "es2017",
     "module": "commonjs",
     "strict": true,
-    "noImplicitAny": false,
+    "noImplicitAny": false, // 不明确的 any 类型必须加类型注解
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "charset": "utf8",
