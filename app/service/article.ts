@@ -1,3 +1,4 @@
+import { IArticleBasic } from '@/typescript/interface/atricle/article-basic.interface'
 import { Service } from 'egg'
 import {createUUID}  from '../utils/tool'
 
@@ -35,17 +36,18 @@ export default class ArticleService extends Service {
         const id = createUUID()
         const { category_parentId, article_categoryId } = params
         // 跟节点的数据
-        // const getParentCategory = await app.config.mysql.select('article_first_category', {
-        //     where: { id: category_parentId }
-        // })
+        const getParentCategory = await app.config.mysql.select('article_first_category', {
+            where: { id: category_parentId }
+        })
         // 当前节点的数据
         const getCategory = await app.config.mysql.select('article_sec_category', {
             where: { parent_id: category_parentId, id: article_categoryId }
         })
-        const insertParams = {
+        const insertParams: IArticleBasic = {
             id,
             ...params,
-            category_name: getCategory.category_name
+            category_name: getCategory.category_name,
+            getParentCategory,
         }
         console.log(insertParams, 'insertParams')
         const result = await app.config.mysql.insert('article', insertParams)
