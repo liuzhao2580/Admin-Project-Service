@@ -1,10 +1,8 @@
-/* tslint：disable-next-line */
 import { Service } from 'egg'
 export default class UserService extends Service {
     // 用户登录
     async userLogin(params) {
         const { app } = this
-        // @ts-ignore: Unreachable code error
         let userLoginInfo = await app.mysql.select('user', { where: params })
         if (userLoginInfo.length > 0) {
             delete userLoginInfo[0].passWord

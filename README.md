@@ -31,3 +31,5 @@ $ npm start
 
 - Node.js 8.x
 - Typescript 2.8+
+
+使用 `@ts-ignore: Unreachable code error` 可以移除 `TS`的告警
