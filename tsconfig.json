@@ -4,13 +4,13 @@
     "target": "es2017",
     "module": "commonjs",
     "strict": true,
-    "noImplicitAny": false, // 不明确的 any 类型必须加类型注解
+    "noImplicitAny": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "charset": "utf8",
     "allowJs": false,
     "pretty": true,
-    "noEmitOnError": false,
+    "noEmitOnError": false, // 报错时不生成输出文件
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowUnreachableCode": false,

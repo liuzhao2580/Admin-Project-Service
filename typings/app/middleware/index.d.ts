@@ -2,7 +2,7 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportErrorHandle from '../../../app/middleware/error-handle';
+import ExportErrorHandle from '../../../app/middleware/errorHandle';
 import ExportJwt from '../../../app/middleware/jwt';
 
 declare module 'egg' {

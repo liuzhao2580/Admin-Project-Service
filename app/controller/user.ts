@@ -15,31 +15,26 @@ export default class UserController extends Controller {
         const { ctx, service } = this
         const params = ctx.request.body
         const { userName, password } = params
-        try {
-            ctx.validate({
-                userName: {
-                    required: true,
-                    type: 'string'
-                },
-                password: {
-                    required: true,
-                    type: 'string',
-                    convertType: 'string'
-                }
-            })
-            const data = await service.user.userLogin({ userName, password })
-            // 如果查询到数据就生成 token
-            if (data.length > 0) {
-                const token = ctx.helper.setToken({ userId: data[0].userId })
-                data[0].token = `${token}`
-                // 调用 rotateCsrfSecret 刷新用户的 CSRF token
-                ctx.rotateCsrfSecret()
-                ctx.body = data_success(data[0])
-            } else ctx.body = no_data_failed(100, '用户名或密码错误')
-        } catch (error) {
-            console.log(error, '')
-            ctx.body = data_failed(100, error)
-        }
+        ctx.validate({
+            userName: {
+                required: true,
+                type: 'string'
+            },
+            password: {
+                required: true,
+                type: 'string',
+                convertType: 'string'
+            }
+        })
+        const data = await service.user.userLogin({ userName, password })
+        // 如果查询到数据就生成 token
+        if (data.length > 0) {
+            const token = ctx.helper.setToken({ userId: data[0].userId })
+            data[0].token = `${token}`
+            // 调用 rotateCsrfSecret 刷新用户的 CSRF token
+            ctx.rotateCsrfSecret()
+            ctx.body = data_success(data[0])
+        } else ctx.body = no_data_failed(100, '用户名或密码错误')
     }
     // 获取用户基本信息
     async get_userInfo() {

@@ -45,9 +45,9 @@ export default class ArticleService extends Service {
         })
         const insertParams: IArticleBasic = {
             id,
-            ...params,
             category_name: getCategory.category_name,
             getParentCategory,
+            ...params,
         }
         console.log(insertParams, 'insertParams')
         const result = await app.config.mysql.insert('article', insertParams)
