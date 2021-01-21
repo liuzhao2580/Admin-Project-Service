@@ -98,7 +98,7 @@ declare module 'egg' {
          * 2. 更新操作必须要指定 `主键` 否则报错
          * @throws 异常 - 1 : 如果没有加主键,会抛出一个 `{}` 空对象的异常
          */
-        update(tableName: string, data: any): Promise<MysqlExecuteResult>
+        update(tableName: string, data: any, where?: any): Promise<MysqlExecuteResult>
 
         /**
          * 删除数据

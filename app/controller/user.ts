@@ -1,6 +1,11 @@
 import { Controller } from 'egg'
 import { data_success, no_data_failed, data_failed, no_data_success } from '../utils/reponse_data'
-import {setToken} from '../utils/jwt'
+import { setToken } from '../utils/jwt'
+import { IUser } from '../typescript/database/user.interface'
+import {
+    IUserLoginParams,
+    IUserInfoParams
+} from '../typescript/interface/user/user-config.interface'
 
 const path = require('path')
 const fs = require('fs')
@@ -14,7 +19,7 @@ export default class UserController extends Controller {
     // 用户登录
     async post_userLogin() {
         const { ctx, service } = this
-        const params = ctx.request.body
+        const params: IUserLoginParams = ctx.request.body
         const { userName, password } = params
         ctx.validate({
             userName: {
@@ -27,11 +32,11 @@ export default class UserController extends Controller {
                 convertType: 'string'
             }
         })
-        const data = await service.user.userLogin({ userName, password })
+        const data: IUser[] = await service.user.userLogin({ userName, password })
         // 如果查询到数据就生成 token
         if (data.length > 0) {
             const token = setToken(ctx, { userId: data[0].userId })
-            data[0].token = `${token}`
+            data[0]['token'] = `${token}`
             // 调用 rotateCsrfSecret 刷新用户的 CSRF token
             ctx.rotateCsrfSecret()
             ctx.body = data_success(data[0])
@@ -40,16 +45,12 @@ export default class UserController extends Controller {
     // 获取用户基本信息
     async get_userInfo() {
         const { ctx, service } = this
-        const params = {
+        const params: IUserInfoParams = {
             userId: ctx.params.id
         }
-        try {
-            const data = await service.user.userInfo(params)
-            if (data.length > 0) ctx.body = data_success(data[0])
-            else ctx.body = no_data_failed(100, '没有该用户')
-        } catch (error) {
-            ctx.body = data_failed(100, error)
-        }
+        const data = await service.user.userInfo(params)
+        if (data.length > 0) ctx.body = data_success(data[0])
+        else ctx.body = no_data_failed(100, '没有该用户')
     }
     // 更新用户信息
     async patch_updateUser() {

@@ -1,13 +1,11 @@
+import { IUser } from '../typescript/database/user.interface'
+import { IUserLoginParams } from '../typescript/interface/user/user-config.interface'
 import { Service } from 'egg'
 export default class UserService extends Service {
     // 用户登录
-    async userLogin(params) {
+    async userLogin(params: IUserLoginParams): Promise<IUser[]> {
         const { app } = this
-        let userLoginInfo = await app.mysql.select('user', { where: params })
-        if (userLoginInfo.length > 0) {
-            delete userLoginInfo[0].passWord
-            delete userLoginInfo[0].is_delete
-        }
+        let userLoginInfo: IUser[] = await app.mysql.select('user', { where: params })
         return userLoginInfo
     }
     // 获取用户信息
@@ -16,11 +14,7 @@ export default class UserService extends Service {
         const userWhere = {
             where: params
         }
-        let userInfo = await app.config.mysql.select('user', userWhere)
-        if (userInfo.length > 0) {
-            delete userInfo[0].passWord
-            delete userInfo[0].is_delete
-        }
+        let userInfo: IUser[] = await app.mysql.select('user', userWhere)
         return userInfo
     }
     // 更新用户信息
@@ -33,7 +27,7 @@ export default class UserService extends Service {
             }
         }
         console.log(updateParams, 'updateParams')
-        const updateStatus = await app.config.mysql.update('user', updateParams, options)
+        const updateStatus = await app.mysql.update('user', updateParams, options)
         return updateStatus.affectedRows
     }
     // 上传用户头像
@@ -48,7 +42,7 @@ export default class UserService extends Service {
                 userId
             }
         }
-        const result = await app.config.mysql.update('user', row, options)
+        const result = await app.mysql.update('user', row, options)
         return result
     }
     // 查看该用户名是否存在
@@ -57,13 +51,13 @@ export default class UserService extends Service {
         const userWhere = {
             where: params
         }
-        const userInfo = await app.config.mysql.select('user', userWhere)
+        const userInfo = await app.mysql.select('user', userWhere)
         return userInfo
     }
     // 新增用户
     async insertUser(params) {
         const { app } = this
-        const insertStatus = await app.config.mysql.insert('user', params)
+        const insertStatus = await app.mysql.insert('user', params)
         return insertStatus.affectedRows
     }
 }

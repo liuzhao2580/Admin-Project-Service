@@ -11,7 +11,7 @@ export interface IUser {
     /** 头像 */
     avatar: string
     /** 密码 */
-    passWord: string
+    password: string
     /** 昵称 */
     nickName: string
     /** 性别 */
@@ -22,4 +22,6 @@ export interface IUser {
     email: string
     /** 创建时间 */
     createTime: Date
+    /** 是否删除 */
+    is_delete: number
 }
