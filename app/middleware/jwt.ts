@@ -1,5 +1,7 @@
+import { verifyToken } from '../utils/jwt'
+import { Context } from 'egg'
 export default () => {
-    return async function jwt(ctx, next) {
+    return async function jwt(ctx: Context, next) {
         const token = ctx.request.header.authorization
         let decode
         /**
@@ -10,7 +12,7 @@ export default () => {
             try {
                 // 解码token，如果在解码token的过程中出现问题，就阻止流程
                 try {
-                    decode = await ctx.helper.verifyToken(token)
+                    decode = await verifyToken(ctx, token)
                     ctx.session.userId = decode.userId
                 } catch (error) {
                     ctx.body = {

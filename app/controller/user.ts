@@ -1,5 +1,6 @@
 import { Controller } from 'egg'
 import { data_success, no_data_failed, data_failed, no_data_success } from '../utils/reponse_data'
+import {setToken} from '../utils/jwt'
 
 const path = require('path')
 const fs = require('fs')
@@ -29,7 +30,7 @@ export default class UserController extends Controller {
         const data = await service.user.userLogin({ userName, password })
         // 如果查询到数据就生成 token
         if (data.length > 0) {
-            const token = ctx.helper.setToken({ userId: data[0].userId })
+            const token = setToken(ctx, { userId: data[0].userId })
             data[0].token = `${token}`
             // 调用 rotateCsrfSecret 刷新用户的 CSRF token
             ctx.rotateCsrfSecret()
