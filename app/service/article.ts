@@ -1,4 +1,4 @@
-import { IArticleBasic } from '@/typescript/interface/atricle/article-basic.interface'
+import { IArticleBasic } from '@/typescript/database/article.interface'
 import { Service } from 'egg'
 import {createUUID}  from '../utils/tool'
 
