@@ -141,16 +141,19 @@
     {
         "code": 0,
         "data": {
-            "userId": 1,
-            "userName": "liuzhao",
-            "roleId": 1,
-            "avatar": "127.0.0.1:7001/public/upload/avatar/1.png",
-            "nickName": "小火车况且况且",
+            "id": 2,
+            "userName": "admin",
+            "roleId": 2,
+            "roleName": "管理员",
+            "avatar": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-minions/94e4c280-349a-11eb-8ff1-d5dcf8779628.png",
+            "password": "admin",
+            "nickName": "小飞机呼哧呼哧",
             "gender": 1,
-            "phone": "13288888888",
-            "email": "132@163.com",
-            "createTime": "2020-09-29T09:35:23.000Z",
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYwNDk4Nzk5NywiZXhwIjoxNjA1MDc0Mzk3fQ.VMsZNrHCeyFN2UcDOMju_XmVJvL44uAtqhT3R2r-Uj0"
+            "phone": "",
+            "email": null,
+            "createTime": "2021-01-14T01:49:21.000Z",
+            "is_delete": 0,
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjExMzAwNTY2LCJleHAiOjE2MTEzODY5NjZ9.0JgYor1efPBn9lDFZmG-tEClKYXpkQvpF-uCLSqYcls"
         },
         "msg": "请求成功"
     }
@@ -158,18 +161,19 @@
 
 + 返回参数说明
 
-    | 返回参数     | 说明                           | 类型     |
-    | ------------ | ------------------------------ | -------- |
-    | `userId`     | 用户ID                         | `number` |
-    | `userName`   | 用户名                         | `string` |
-    | `roleId`     | 用户权限，用来设置侧边栏的访问 | `number` |
-    | `avatar`     | 用户头像地址                   | `string` |
-    | `nickName`   | 用户昵称                       | `string` |
-    | `gender`     | 用户性别： 1 代表男 ，0 代表女 | `number` |
-    | `phone`      | 用户电话号码                   | `string` |
-    | `email`      | 用户邮箱                       | `string` |
-    | `createTime` | 用户被创建时间                 | `string` |
-    | `token`      | `登录时返回的token`            | `string` |
+    | 返回参数     | 说明                               | 类型     |
+    | ------------ | ---------------------------------- | -------- |
+    | `id`         | 用户ID                             | `number` |
+    | `userName`   | 用户名                             | `string` |
+    | `roleId`     | 用户权限，用来设置侧边栏的访问     | `number` |
+    | roleName     | 用户权限中文，用来设置侧边栏的访问 | string   |
+    | `avatar`     | 用户头像地址                       | `string` |
+    | `nickName`   | 用户昵称                           | `string` |
+    | `gender`     | 用户性别： 1 代表男 ，0 代表女     | `number` |
+    | `phone`      | 用户电话号码                       | `string` |
+    | `email`      | 用户邮箱                           | `string` |
+    | `createTime` | 用户被创建时间                     | `string` |
+    | `token`      | `登录时返回的token`                | `string` |
 
 ### 1.2 获取用户基本信息
 
@@ -183,15 +187,18 @@
     {
         "code": 0,
         "data": {
-            "userId": 1,
+            "id": 1,
             "userName": "liuzhao",
-            "user_role": 1,
-            "avatar": "127.0.0.1:7001/public/upload/avatar/1.png",
+            "roleId": 1,
+            "roleName": "超级管理员",
+            "avatar": "https://vkceyugu.cdn.bspapp.com/VKCEYUGU-minions/ec902db0-3497-11eb-b997-9918a5dda011.jpg",
+            "password": "123456",
             "nickName": "小火车况且况且",
             "gender": 1,
             "phone": "13288888888",
             "email": "132@163.com",
-            "createTime": "2020-09-29T09:35:23.000Z"
+            "createTime": "2021-01-14T01:49:36.000Z",
+            "is_delete": 0
         },
         "msg": "请求成功"
     }
@@ -207,14 +214,14 @@
 
 + 请求参数
 
-    | 请求参数    | 类型     | 是否必须 |
-    | ----------- | -------- | -------- |
-    | `userId`    | `number` | 是       |
-    | `user_role` | `number` | 是       |
-    | `phone`     | `number` | 否       |
-    | `nickName`  | `string` | 否       |
-    | `gender`    | `number` | 否       |
-    | `email`     | `email`  | 否       |
+    | 请求参数    | 参数说明   | 类型     | 是否必须 |
+    | ----------- | ---------- | -------- | -------- |
+    | `id`        | 用户id     | `number` | 是       |
+    | `user_role` | 用户权限id | `number` | 是       |
+    | `phone`     | 电话       | `number` | 否       |
+    | `nickName`  | 昵称       | `string` | 否       |
+    | `gender`    |            | `number` | 否       |
+    | `email`     |            | `email`  | 否       |
 
 + 返回数据
 
