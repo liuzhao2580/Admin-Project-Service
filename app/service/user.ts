@@ -1,14 +1,11 @@
-const Service = require('egg').Service
-
-class UserService extends Service {
+import { IUser } from '../typescript/database/user.interface'
+import { IUserLoginParams } from '../typescript/interface/user/user-config.interface'
+import { Service } from 'egg'
+export default class UserService extends Service {
     // 用户登录
-    async userLogin(params) {
+    async userLogin(params: IUserLoginParams): Promise<IUser[]> {
         const { app } = this
-        let userLoginInfo = await app.mysql.select('user', { where: params })
-        if (userLoginInfo.length > 0) {
-            delete userLoginInfo[0].passWord
-            delete userLoginInfo[0].is_delete
-        }
+        let userLoginInfo: IUser[] = await app.mysql.select('user', { where: params })
         return userLoginInfo
     }
     // 获取用户信息
@@ -17,11 +14,7 @@ class UserService extends Service {
         const userWhere = {
             where: params
         }
-        let userInfo = await app.mysql.select('user', userWhere)
-        if (userInfo.length > 0) {
-            delete userInfo[0].passWord
-            delete userInfo[0].is_delete
-        }
+        let userInfo: IUser[] = await app.mysql.select('user', userWhere)
         return userInfo
     }
     // 更新用户信息
@@ -39,8 +32,8 @@ class UserService extends Service {
     }
     // 上传用户头像
     async uploadUserAvatar(params) {
-        const {app} = this
-        const {userId, avatar} = params
+        const { app } = this
+        const { userId, avatar } = params
         const row = {
             avatar
         }
@@ -68,5 +61,3 @@ class UserService extends Service {
         return insertStatus.affectedRows
     }
 }
-
-module.exports = UserService

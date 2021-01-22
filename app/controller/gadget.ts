@@ -1,7 +1,7 @@
-const Controller = require('egg').Controller
+import { Controller } from 'egg'
 const { data_success, data_failed } = require('../utils/reponse_data')
 const { seniverseApi, errorList } = require('../utils/seniverse-api')
-class Gadget extends Controller {
+export default class Gadget extends Controller {
     // 获取天气 使用的是心知天气提供的api https://www.seniverse.com/docs
     async get_Weather() {
         const { ctx } = this
@@ -15,4 +15,3 @@ class Gadget extends Controller {
     }
 }
 
-module.exports = Gadget

@@ -1,13 +1,11 @@
-const {
+import { Controller } from 'egg'
+import {
     no_data_success,
     no_data_failed,
     data_failed,
     data_success
-} = require('../utils/reponse_data')
-
-const Controller = require('egg').Controller
-
-class ArticleController extends Controller {
+} from '../utils/reponse_data'
+export default class ArticleController extends Controller {
     // 文章列表 获取所有数据
     async get_articleList() {
         const { ctx, service } = this
@@ -155,10 +153,10 @@ class ArticleController extends Controller {
         const { ctx, service } = this
         const result = await service.article.select_category()
         // 说明存在数据，需要将数据结构重构为树形
-        let respon_data = []
+        let respon_data:any[] = []
         if (result.length > 0) {
-            function type_looper(data, up_data = [], level = 1) {
-                let get_category = []
+            function type_looper(data, up_data:any[] = [], level = 1) {
+                let get_category: any[] = []
                 // 上一级类别
                 const get_up_data = data.filter(item => item.level == level)
                 // 说明能找到相应的数据
@@ -167,7 +165,7 @@ class ArticleController extends Controller {
                     if (get_up_data.length < data.length) {
                         // 首先获取的数据为下一级
                         const get_down_data = data.slice(get_up_data.length)
-                        const respon_data = type_looper(get_down_data, get_up_data, level + 1)
+                        const respon_data:any[] = type_looper(get_down_data, get_up_data, level + 1)
                         if (respon_data.some(item => !item.parent_id)) get_category = respon_data
                         up_data.forEach(up_item => {
                             const getFlag = respon_data.filter(down_item => {
@@ -214,7 +212,7 @@ class ArticleController extends Controller {
     async get_moreTable_category() {
         const { service, ctx } = this
         const result = await service.article.select_moreTableCategory()
-        let result_arr = []
+        let result_arr:any[] = []
         if (result.length > 0) {
             // 用来记录当前的索引，从-1开始
             let times = -1
@@ -285,4 +283,3 @@ class ArticleController extends Controller {
     //--------------------------------------------文章分类---------------------------------------
 }
 
-module.exports = ArticleController

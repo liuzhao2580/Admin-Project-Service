@@ -1,4 +1,5 @@
-module.exports = app => {
+import { Application } from 'egg';
+export default (app:Application) => {
     // 获取 csrf-token 发送一条随机请求
     app.router.get('/CSRFToken', app.controller.user.CSRFToken)
     // 用户登录

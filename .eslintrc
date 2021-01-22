@@ -1,3 +1,10 @@
 {
-    "extends": "none"
+  "extends": "eslint-config-egg/typescript",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "semi": ["error", false],
+    "indent": 0//强行缩进
+  }
 }

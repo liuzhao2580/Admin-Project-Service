@@ -1,7 +1,9 @@
-module.exports = () => {
-    return async function jwt(ctx, next) {
+import { verifyToken } from '../utils/jwt'
+import { Context } from 'egg'
+export default () => {
+    return async function jwt(ctx: Context, next) {
         const token = ctx.request.header.authorization
-        let decode = null
+        let decode
         /**
          * 1.如果token存在 捕获项目中的问题的同时捕获token校验的问题
          * 2.捕获token校验的问题，如果token出错就直接返回错误问题，并且阻止流程执行
@@ -10,7 +12,7 @@ module.exports = () => {
             try {
                 // 解码token，如果在解码token的过程中出现问题，就阻止流程
                 try {
-                    decode = await ctx.helper.verifyToken(token)
+                    decode = await verifyToken(ctx, token)
                     ctx.session.userId = decode.userId
                 } catch (error) {
                     ctx.body = {

@@ -1,4 +1,4 @@
-module.exports = app =>{
+export default app =>{
     // 文章列表 获取所有数据
     app.router.get('/article/list', app.controller.article.get_articleList)
     // 查询文章

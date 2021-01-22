@@ -1,9 +1,9 @@
 const { data_success } = require('../utils/reponse_data')
 const { getMathRandom } = require('../utils/tool')
 
-const Controller = require('egg').Controller
+import { Controller } from 'egg'
 
-class Dashboard extends Controller {
+export default class Dashboard extends Controller {
     /** Echarts 的数据 */
     async get_EchartsData() {
         const { ctx } = this
@@ -52,4 +52,3 @@ class Dashboard extends Controller {
     }
 }
 
-module.exports = Dashboard

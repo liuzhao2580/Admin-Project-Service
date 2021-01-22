@@ -1,11 +1,12 @@
-const Service = require('egg').Service
-const { createUUID } = require('../utils/tool')
+import { IArticleBasic } from '@/typescript/database/article.interface'
+import { Service } from 'egg'
+import {createUUID}  from '../utils/tool'
 
-class ArticleService extends Service {
+export default class ArticleService extends Service {
     // 文章列表 获取所有数据
     async findAllList() {
         const { app } = this
-        const result = await app.mysql.select('article', { where: { is_delete: 0 } })
+        const result = await app.config.mysql.select('article', { where: { is_delete: 0 } })
         return result
     }
     // 查询该文章和该用户是否匹配，判断文章是否被该用户创建
@@ -17,7 +18,7 @@ class ArticleService extends Service {
         const options = {
             where: params
         }
-        const result = await app.mysql.select('article', options)
+        const result = await app.config.mysql.select('article', options)
         return result
     }
     // 查询文章
@@ -26,7 +27,7 @@ class ArticleService extends Service {
         const options = {
             where: { id, is_delete: 0 }
         }
-        const result = await app.mysql.select('article', options)
+        const result = await app.config.mysql.select('article', options)
         return result
     }
     // 新增文章
@@ -35,24 +36,21 @@ class ArticleService extends Service {
         const id = createUUID()
         const { category_parentId, article_categoryId } = params
         // 跟节点的数据
-        const getParentCategory = await app.mysql.select('article_first_category', {
+        const getParentCategory = await app.config.mysql.select('article_first_category', {
             where: { id: category_parentId }
         })
         // 当前节点的数据
-        const getCategory = await app.mysql.select('article_sec_category', {
+        const getCategory = await app.config.mysql.select('article_sec_category', {
             where: { parent_id: category_parentId, id: article_categoryId }
         })
-        const insertParams = {
+        const insertParams: IArticleBasic = {
             id,
+            category_name: getCategory.category_name,
+            getParentCategory,
             ...params,
-            category_name: getCategory.category_name
         }
         console.log(insertParams, 'insertParams')
-        try {
-            const result = await app.mysql.insert('article', insertParams)
-        } catch (error) {
-            console.log(error, 'error')
-        }
+        const result = await app.config.mysql.insert('article', insertParams)
         console.log(result, 'result')
         return result
     }
@@ -66,7 +64,7 @@ class ArticleService extends Service {
                 creator_id
             }
         }
-        const result = await app.mysql.update('article', update_row, options)
+        const result = await app.config.mysql.update('article', update_row, options)
         return result
     }
     // 删除文章
@@ -78,7 +76,7 @@ class ArticleService extends Service {
         const row = {
             is_delete: 1
         }
-        const result = await app.mysql.update('article', row, options)
+        const result = await app.config.mysql.update('article', row, options)
         return result
     }
     // 添加文章评论
@@ -90,7 +88,7 @@ class ArticleService extends Service {
         if (articleFlag.length == 0) result = { code: 104, msg: '该文章不存在' }
         else if (userFlag.length == 0) result = { code: 104, msg: '该用户不存在' }
         else {
-            result = await app.mysql.insert('article_comment', params)
+            result = await app.config.mysql.insert('article_comment', params)
         }
         return result
     }
@@ -99,7 +97,7 @@ class ArticleService extends Service {
     // 获取所有文章类别 按照树形结构 表 article_category 把类别都集中在一个表中
     async select_category() {
         const { app } = this
-        const result = await app.mysql.select('article_category')
+        const result = await app.config.mysql.select('article_category')
         return result
     }
     // 获取所有文章类别，按照树形结构 多表 不同级别的类别存放在不同的表中
@@ -116,7 +114,7 @@ class ArticleService extends Service {
         ORDER BY
             first_type.id,
             sec_type.id`
-        const result = await app.mysql.query(querySql)
+        const result = await app.config.mysql.query(querySql)
         return result
     }
 
@@ -128,7 +126,7 @@ class ArticleService extends Service {
         const { id, level } = params
         // 设置 级别的范围 最大三级 最小一级
         const levelData = [1, 2, 3]
-        const getLevel = levelData.find((item) => item === level)
+        const getLevel = levelData.find(item => item === level)
         const query_params =
             getLevel && id
                 ? {
@@ -140,15 +138,15 @@ class ArticleService extends Service {
         switch (Number(level)) {
             // 一级节点/根节点
             case 1:
-                result = await app.mysql.select('article_first_category')
+                result = await app.config.mysql.select('article_first_category')
                 break
             // 二级节点
             case 2:
-                result = await app.mysql.select('article_sec_category', query_params)
+                result = await app.config.mysql.select('article_sec_category', query_params)
                 break
             // 三级节点
             case 3:
-                result = await app.mysql.select('article_third_category', query_params)
+                result = await app.config.mysql.select('article_third_category', query_params)
                 break
             default:
                 break
@@ -157,5 +155,3 @@ class ArticleService extends Service {
     }
     //--------------------------------------------文章分类---------------------------------------
 }
-
-module.exports = ArticleService
