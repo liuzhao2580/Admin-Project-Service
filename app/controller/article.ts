@@ -1,10 +1,10 @@
 import { Controller } from 'egg'
-const {
+import {
     no_data_success,
     no_data_failed,
     data_failed,
     data_success
-} = require('../utils/reponse_data')
+} from '../utils/reponse_data'
 export default class ArticleController extends Controller {
     // 文章列表 获取所有数据
     async get_articleList() {
