@@ -1,7 +1,7 @@
 /** 存放在数据库 中的 用户基本信息 */
 export interface IUser {
     /** 用户 id */
-    userId: string
+    id: string
     /** 用户名 */
     userName: string
     /** 权限 id */

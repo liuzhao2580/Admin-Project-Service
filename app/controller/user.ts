@@ -14,10 +14,10 @@ export default class UserController extends Controller {
     // 获取 csrf-token 发送一条随机请求
     async CSRFToken() {
         const { ctx } = this
-        ctx.body = await no_data_success()
+        ctx.body = no_data_success()
     }
-    // 用户登录
-    async post_userLogin() {
+    /** 用户登录 */
+    async post_userLogin() {    
         const { ctx, service } = this
         const params: IUserLoginParams = ctx.request.body
         const { userName, password } = params
@@ -35,18 +35,18 @@ export default class UserController extends Controller {
         const data: IUser[] = await service.user.userLogin({ userName, password })
         // 如果查询到数据就生成 token
         if (data.length > 0) {
-            const token = setToken(ctx, { userId: data[0].userId })
+            const token = setToken(ctx, { id: data[0].id })
             data[0]['token'] = `${token}`
             // 调用 rotateCsrfSecret 刷新用户的 CSRF token
             ctx.rotateCsrfSecret()
             ctx.body = data_success(data[0])
         } else ctx.body = no_data_failed(100, '用户名或密码错误')
     }
-    // 获取用户基本信息
+    /** 获取用户基本信息 */
     async get_userInfo() {
         const { ctx, service } = this
         const params: IUserInfoParams = {
-            userId: ctx.params.id
+            id: ctx.params.id
         }
         const data = await service.user.userInfo(params)
         if (data.length > 0) ctx.body = data_success(data[0])
@@ -57,7 +57,7 @@ export default class UserController extends Controller {
         const { ctx, service } = this
         try {
             ctx.validate({
-                userId: {
+                id: {
                     required: true,
                     type: 'number',
                     convertType: 'number'
@@ -87,7 +87,7 @@ export default class UserController extends Controller {
                 }
             })
             const params = {
-                userId: ctx.request.body.userId
+                id: ctx.request.body.id
             }
             const data = await service.user.userInfo(params)
             // 说明该用户存在
@@ -107,8 +107,8 @@ export default class UserController extends Controller {
     async post_upload_avatar() {
         const { ctx, service } = this
         // 获取用户 id
-        const { userId } = ctx.request.body
-        if (!userId) return (ctx.body = no_data_failed(100, '用户id不能为空'))
+        const { id } = ctx.request.body
+        if (!id) return (ctx.body = no_data_failed(100, '用户id不能为空'))
         // 获取上传的文件
         const getFile = ctx.request.files[0]
         // 匹配图像类型
@@ -117,7 +117,7 @@ export default class UserController extends Controller {
             return (ctx.body = no_data_failed(100, '上传的文件只能是jpg png jpeg 后缀的'))
         const arr = getFile.filename.split('.')
         const suffix = arr[arr.length - 1]
-        const setFileName = `${userId}.${suffix}`
+        const setFileName = `${id}.${suffix}`
         // 文件路径
         const taskFileUrl = path.join(__dirname, `../public/upload/avatar/`, setFileName)
         // const getReadStream = fs.createReadStream(getFile.filepath)
@@ -126,7 +126,7 @@ export default class UserController extends Controller {
         // 1. 首先获取avatar目录下的所有图片
         const getAllAvatar = fs.readdirSync(path.join(__dirname, `../public/upload/avatar/`))
         // 2. 找到当前的用户之前上传过的头像
-        const getUserIdAvatar = getAllAvatar.find((item) => item.split('.')[0] == userId)
+        const getUserIdAvatar = getAllAvatar.find((item) => item.split('.')[0] == id)
         // 3. 如果存在图片就删除
         if (getUserIdAvatar)
             fs.unlinkSync(path.join(__dirname, `../public/upload/avatar/`, getUserIdAvatar))
@@ -136,7 +136,7 @@ export default class UserController extends Controller {
             fs.writeFileSync(taskFileUrl, readFileData)
             const getAvatarUrl = `http://${ctx.host}/public/upload/avatar/${setFileName}`
             const params = {
-                userId,
+                id,
                 avatar: getAvatarUrl
             }
             const result = await service.user.uploadUserAvatar(params)

@@ -1,35 +1,11 @@
-# hackernews-async-ts
-
-[Hacker News](https://news.ycombinator.com/) showcase using typescript && egg
-
-## QuickStart
-
-### Development
-
-```bash
-$ npm i
-$ npm run dev
-$ open http://localhost:7001/
+1. 使用 `@ts-ignore: Unreachable code error` 可以移除 `TS`的告警
+2. `TS`中`interface`的高级使用
+ +  可以指定继承字段,使用`Pick`
+```ts
+interface IUser {
+    userName: string
+    password: string
+    id: string
+}
+export interface IUserLoginParams extends Pick<IUser, "userName" | 'password'> {}
 ```
-
-Don't tsc compile at development mode, if you had run `tsc` then you need to `npm run clean` before `npm run dev`.
-
-### Deploy
-
-```bash
-$ npm run tsc
-$ npm start
-```
-
-### Npm Scripts
-
-- Use `npm run lint` to check code style
-- Use `npm test` to run unit test
-- se `npm run clean` to clean compiled js at development mode once
-
-### Requirement
-
-- Node.js 8.x
-- Typescript 2.8+
-
-使用 `@ts-ignore: Unreachable code error` 可以移除 `TS`的告警

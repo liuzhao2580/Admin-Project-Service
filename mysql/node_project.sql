@@ -184,7 +184,7 @@ INSERT INTO `article_third_category` VALUES ('4', '火影忍者', '22');
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `userId` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户的id',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户的id',
   `userName` varchar(255) NOT NULL DEFAULT '' COMMENT '用户名',
   `roleId` int(2) NOT NULL DEFAULT '3' COMMENT '角色权限',
   `roleName` varchar(50) NOT NULL COMMENT '权限中文名',
@@ -196,7 +196,7 @@ CREATE TABLE `user` (
   `email` char(30) DEFAULT NULL COMMENT '邮箱',
   `createTime` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `is_delete` int(1) DEFAULT '0',
-  PRIMARY KEY (`userId`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -210,9 +210,9 @@ INSERT INTO `user` VALUES ('2', 'admin', '2', '管理员', 'https://vkceyugu.cdn
 -- ----------------------------
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role` (
-  `roleId` int(3) NOT NULL AUTO_INCREMENT,
+  `id` int(3) NOT NULL AUTO_INCREMENT,
   `roleName` varchar(20) NOT NULL COMMENT '权限的名称',
-  PRIMARY KEY (`roleId`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
