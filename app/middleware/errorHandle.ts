@@ -1,5 +1,6 @@
 import { no_data_failed } from '../utils/reponse_data'
 import { Context } from 'egg'
+/** 用来处理所有的异常问题中间件 */
 export default () => {
     return async function ErrorHandle(ctx: Context, next) {
         try {
