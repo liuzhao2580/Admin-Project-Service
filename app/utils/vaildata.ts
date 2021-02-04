@@ -1,6 +1,5 @@
-const { app } = require("egg-mock");
-
-module.exports = app => {
+import { MockApplication } from 'egg-mock'
+export default (app:MockApplication) => {
     let { validator } = app
     // 手机号
     validator.addRule('phone', (_rule, value) => {
