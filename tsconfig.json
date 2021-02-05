@@ -10,7 +10,7 @@
     "charset": "utf8",
     "allowJs": false,
     "pretty": true,
-    "noEmitOnError": false, // 报错时不生成输出文件
+    "noEmitOnError": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowUnreachableCode": false,

@@ -1,4 +1,6 @@
 ## 基于`egg.js`实现的`react-antd-admim`的后台管理系统的服务端
+## **注意** 使用`typescript`之后,使用`npm start`或者`yarn start`之前需要先使用`npm run tsc`或者`yarn tsc`编译一次`ts`文件用来生成`js`文件,因为在生产环境中不会引入`ts-loader` [issues地址](https://github.com/eggjs/egg/issues/3926#issuecomment-528155822)
++ 开发过程中使用`npm run clean`或者`yarn clean`可以清除之前的`js`文件
 
 1. `npm run dev` 项目启动
 
@@ -64,3 +66,9 @@ interface IUser {
 }
 export interface IUserLoginParams extends Pick<IUser, "userName" | 'password'> {}
 ```
+
+`vscode`使用`yarn`的过程中出现 `yarn.ps1，因为在此系统中禁止执行脚本。有关详细信息，请参阅 "get-help about_signing"。`错误解决方法
+在终端输入`get-ExecutionPolicy`显示的是`Restricted`
+再输入`set-ExecutionPolicy RemoteSigned`回车
+最后再次输入`get-ExecutionPolicy`显示的是`RemoteSigned`即可
+如果有问题可以通过管理员身份运行`vscode`
