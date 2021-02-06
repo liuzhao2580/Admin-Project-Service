@@ -1,10 +1,25 @@
 {
-  "extends": "eslint-config-egg/typescript",
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "parserOptions": {
-    "project": "./tsconfig.json"
+      "ecmaVersion": 6,
+      "sourceType": "module"
+  },
+  "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+  ],
+  "env": {
+      "node": true,
+      "browser": true,
+      "commonjs": true,
+      "es6": true,
+      "jquery": true
   },
   "rules": {
-    "indent":0,
-    "semi":0
+      "linebreak-style": ["error", "windows"],
+      "no-console":"off",
+      "no-mixed-requires":"off"
   }
 }
