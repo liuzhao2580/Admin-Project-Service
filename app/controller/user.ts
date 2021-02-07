@@ -7,8 +7,8 @@ import {
     IUserInfoParams
 } from '../typescript/interface/user/user-config.interface'
 
-const path = require('path')
-const fs = require('fs')
+import * as path from 'path'
+import * as fs from 'fs'
 
 export default class UserController extends Controller {
     // 获取 csrf-token 发送一条随机请求
@@ -17,7 +17,7 @@ export default class UserController extends Controller {
         ctx.body = no_data_success()
     }
     /** 用户登录 */
-    async post_userLogin() {    
+    async post_userLogin() {
         const { ctx, service } = this
         const params: IUserLoginParams = ctx.request.body
         const { userName, password } = params
@@ -112,7 +112,7 @@ export default class UserController extends Controller {
         // 获取上传的文件
         const getFile = ctx.request.files[0]
         // 匹配图像类型
-        let typeReg = /(\.jpg|\.png|\.jpeg)$/i
+        const typeReg = /(\.jpg|\.png|\.jpeg)$/i
         if (!typeReg.test(getFile.filename))
             return (ctx.body = no_data_failed(100, '上传的文件只能是jpg png jpeg 后缀的'))
         const arr = getFile.filename.split('.')

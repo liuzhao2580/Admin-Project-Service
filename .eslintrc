@@ -1,25 +1,25 @@
+// https://eslint.bootcss.com/docs/user-guide/configuring 中文文档地址
 {
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module"
-  },
-  "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-  ],
-  "env": {
-      "node": true,
-      "browser": true,
-      "commonjs": true,
-      "es6": true,
-      "jquery": true
-  },
-  "rules": {
-      "linebreak-style": ["error", "windows"],
-      "no-console":"off",
-      "no-mixed-requires":"off"
-  }
+    "env": {
+        "node": true,
+        "browser": true,
+        "commonjs": true,
+        "es6": true
+    },
+    "rules": {
+        "no-console": "off",
+        "no-mixed-requires": "off",
+        "indent": ["warn", 4]
+    },
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "parser": "@typescript-eslint/parser",
+            "plugins": ["@typescript-eslint"],
+            "extends": "plugin:@typescript-eslint/recommended",
+            "rules": {
+                "@typescript-eslint/explicit-module-boundary-types": "off"
+            }
+        }
+    ]
 }
