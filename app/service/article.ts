@@ -1,12 +1,12 @@
-import { IArticleBasic } from '@/typescript/database/article.interface'
-import { Service } from 'egg'
-import {createUUID}  from '../utils/tool'
+import { IArticleBasic } from "@/typescript/database/article.interface"
+import { Service } from "egg"
+import { createUUID } from "../utils/tool"
 
 export default class ArticleService extends Service {
     // 文章列表 获取所有数据
     async findAllList() {
         const { app } = this
-        const result = await app.config.mysql.select('article', { where: { is_delete: 0 } })
+        const result: any[] = await app.mysql.select("article", { where: { is_delete: 0 } })
         return result
     }
     // 查询该文章和该用户是否匹配，判断文章是否被该用户创建
@@ -16,18 +16,18 @@ export default class ArticleService extends Service {
     async article_confirm(params) {
         const { app } = this
         const options = {
-            where: params
+            where: params,
         }
-        const result = await app.config.mysql.select('article', options)
+        const result = await app.mysql.select("article", options)
         return result
     }
     // 查询文章
     async article_query(id) {
         const { app } = this
         const options = {
-            where: { id, is_delete: 0 }
+            where: { id, is_delete: 0 },
         }
-        const result = await app.config.mysql.select('article', options)
+        const result = await app.mysql.select("article", options)
         return result
     }
     // 新增文章
@@ -36,12 +36,12 @@ export default class ArticleService extends Service {
         const id = createUUID()
         const { category_parentId, article_categoryId } = params
         // 跟节点的数据
-        const getParentCategory = await app.config.mysql.select('article_first_category', {
-            where: { id: category_parentId }
+        const getParentCategory = await app.mysql.select("article_first_category", {
+            where: { id: category_parentId },
         })
         // 当前节点的数据
-        const getCategory = await app.config.mysql.select('article_sec_category', {
-            where: { parent_id: category_parentId, id: article_categoryId }
+        const getCategory: any = await app.mysql.select("article_sec_category", {
+            where: { parent_id: category_parentId, id: article_categoryId },
         })
         const insertParams: IArticleBasic = {
             id,
@@ -49,9 +49,9 @@ export default class ArticleService extends Service {
             getParentCategory,
             ...params,
         }
-        console.log(insertParams, 'insertParams')
-        const result = await app.config.mysql.insert('article', insertParams)
-        console.log(result, 'result')
+        console.log(insertParams, "insertParams")
+        const result = await app.mysql.insert("article", insertParams)
+        console.log(result, "result")
         return result
     }
     // 更新文章
@@ -61,22 +61,22 @@ export default class ArticleService extends Service {
         const options = {
             where: {
                 id,
-                creator_id
-            }
+                creator_id,
+            },
         }
-        const result = await app.config.mysql.update('article', update_row, options)
+        const result = await app.mysql.update("article", update_row, options)
         return result
     }
     // 删除文章
     async article_delete(id) {
         const { app } = this
         const options = {
-            where: id
+            where: id,
         }
         const row = {
-            is_delete: 1
+            is_delete: 1,
         }
-        const result = await app.config.mysql.update('article', row, options)
+        const result = await app.mysql.update("article", row, options)
         return result
     }
     // 添加文章评论
@@ -85,10 +85,10 @@ export default class ArticleService extends Service {
         let result
         const articleFlag = await this.article_query(params.comment_article_id)
         const userFlag = await service.user.userInfo(params.comment_userId)
-        if (articleFlag.length == 0) result = { code: 104, msg: '该文章不存在' }
-        else if (userFlag.length == 0) result = { code: 104, msg: '该用户不存在' }
+        if (articleFlag.length == 0) result = { code: 104, msg: "该文章不存在" }
+        else if (userFlag.length == 0) result = { code: 104, msg: "该用户不存在" }
         else {
-            result = await app.config.mysql.insert('article_comment', params)
+            result = await app.mysql.insert("article_comment", params)
         }
         return result
     }
@@ -97,7 +97,7 @@ export default class ArticleService extends Service {
     // 获取所有文章类别 按照树形结构 表 article_category 把类别都集中在一个表中
     async select_category() {
         const { app } = this
-        const result = await app.config.mysql.select('article_category')
+        const result = await app.mysql.select("article_category")
         return result
     }
     // 获取所有文章类别，按照树形结构 多表 不同级别的类别存放在不同的表中
@@ -114,39 +114,36 @@ export default class ArticleService extends Service {
         ORDER BY
             first_type.id,
             sec_type.id`
-        const result = await app.config.mysql.query(querySql)
+        const result = await app.mysql.query(querySql)
         return result
     }
 
     // 获取文章类别，按照懒加载的形式
     async select_lazy_category(params) {
         const { app } = this
-        let result = null
+        let result
         // id 传递的节点id  level 传递的级别， 默认为1 ，代表根节点 level == 2 代表二级节点
         const { id, level } = params
         // 设置 级别的范围 最大三级 最小一级
         const levelData = [1, 2, 3]
-        const getLevel = levelData.find(item => item === level)
-        const query_params =
-            getLevel && id
-                ? {
-                      where: { parent_id: id }
-                  }
-                : null
+        const getLevel = levelData.find((item) => item === level)
+        const query_params = {
+            where: getLevel && id ? { parent_id: id } : {},
+        }
         // 说明 level 存在 但是不在范围中
         if (!getLevel) return result
         switch (Number(level)) {
             // 一级节点/根节点
             case 1:
-                result = await app.config.mysql.select('article_first_category')
+                result = await app.mysql.select("article_first_category")
                 break
             // 二级节点
             case 2:
-                result = await app.config.mysql.select('article_sec_category', query_params)
+                result = await app.mysql.select("article_sec_category", query_params)
                 break
             // 三级节点
             case 3:
-                result = await app.config.mysql.select('article_third_category', query_params)
+                result = await app.mysql.select("article_third_category", query_params)
                 break
             default:
                 break

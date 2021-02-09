@@ -2,6 +2,28 @@
     "defaultSeverity": "warn",
     "rules": {
         "member-access": false,
+        "member-ordering": [
+            true,
+            {
+                "order": [
+                    "public-static-field",
+                    "public-static-method",
+                    "protected-static-field",
+                    "protected-static-method",
+                    "private-static-field",
+                    "private-static-method",
+                    "public-instance-field",
+                    "protected-instance-field",
+                    "private-instance-field",
+                    "public-constructor",
+                    "protected-constructor",
+                    "private-constructor",
+                    "public-instance-method",
+                    "protected-instance-method",
+                    "private-instance-method"
+                ]
+            }
+        ],
         "no-parameter-reassignment": false,
         "prefer-for-of": true,
         "no-namespace": false,
@@ -35,11 +57,14 @@
         "restrict-plus-operands": false,
         "triple-equals": false,
         "use-isnan": true,
+
+        "indent": [false, "spaces", 4],
         "max-classes-per-file": [true, 1],
         "max-file-line-count": [true, 1000],
         "max-line-length": [true, 300],
         "no-default-export": false,
         "no-duplicate-imports": true,
+
         "align": [false, "parameters", "arguments", "statements", "members", "elements"],
         "array-type": [false, "array"],
         "class-name": false,
@@ -55,7 +80,8 @@
         "no-unnecessary-initializer": false,
         "no-throw-literal": false
     },
+    "rulesDirectory": [],
     "linterOptions": {
-        "exclude": ["e2e/**/*"]
+        "exclude": ["e2e/**/*", "node_modules", "vue.config.js"]
     }
 }

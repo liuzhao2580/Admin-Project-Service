@@ -6,11 +6,7 @@
         "commonjs": true,
         "es6": true
     },
-    "rules": {
-        "no-console": "off",
-        "no-mixed-requires": "off",
-        "indent": ["warn", 4]
-    },
+    "rules": {},
     "overrides": [
         {
             "files": ["*.ts"],
@@ -18,7 +14,8 @@
             "plugins": ["@typescript-eslint"],
             "extends": "plugin:@typescript-eslint/recommended",
             "rules": {
-                "@typescript-eslint/explicit-module-boundary-types": "off"
+                "@typescript-eslint/explicit-module-boundary-types": "off",
+                "@typescript-eslint/no-explicit-any": ["off", { "ignoreRestArgs": false }]
             }
         }
     ]
