@@ -5,7 +5,7 @@ export default class UserService extends Service {
     /** 用户登录 */
     async userLogin(params: IUserLoginParams): Promise<IUser[]> {
         const { app } = this
-        let userLoginInfo: IUser[] = await app.mysql.select('user', { where: params })
+        const userLoginInfo: IUser[] = await app.mysql.select('user', { where: params })
         return userLoginInfo
     }
     /** 获取用户信息 */
@@ -14,7 +14,7 @@ export default class UserService extends Service {
         const userWhere = {
             where: params
         }
-        let userInfo: IUser[] = await app.mysql.select('user', userWhere)
+        const userInfo: IUser[] = await app.mysql.select('user', userWhere)
         return userInfo
     }
     /** 更新用户信息 */
