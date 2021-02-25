@@ -2,7 +2,7 @@
 
 ## **注意** 使用`typescript`之后,使用`npm start`或者`yarn start`之前需要先使用`npm run tsc`或者`yarn tsc`编译一次`ts`文件用来生成`js`文件,因为在生产环境中不会引入`ts-loader` [issues 地址](https://github.com/eggjs/egg/issues/3926#issuecomment-528155822)
 
--   开发过程中使用`npm run clean`或者`yarn clean`可以清除之前的`js`文件
+- 开发过程中使用`npm run clean`或者`yarn clean`可以清除之前的`js`文件
 
 1. `npm run dev` 项目启动
 
@@ -13,10 +13,10 @@
 
 ```js
 module.exports = {
-    validate: {
-        enable: true,
-        package: 'egg-validate'
-    }
+  validate: {
+    enable: true,
+    package: "egg-validate",
+  },
 }
 ```
 
@@ -69,15 +69,15 @@ security: {
 1. 使用 `@ts-ignore: Unreachable code error` 可以移除 `TS`的告警
 2. `TS`中`interface`的高级使用
 
--   可以指定继承字段,使用`Pick`
+- 可以指定继承字段,使用`Pick`
 
 ```ts
 interface IUser {
-    userName: string
-    password: string
-    id: string
+  userName: string
+  password: string
+  id: string
 }
-export interface IUserLoginParams extends Pick<IUser, 'userName' | 'password'> {}
+export interface IUserLoginParams extends Pick<IUser, "userName" | "password"> {}
 ```
 
 `VSCode`使用`yarn`的过程中出现 `yarn.ps1，因为在此系统中禁止执行脚本。有关详细信息，请参阅 "get-help about_signing"。`错误解决方法
@@ -88,9 +88,9 @@ export interface IUserLoginParams extends Pick<IUser, 'userName' | 'password'> {
 
 `VSCode`使用`TSLlint`校验`TS`代码
 
--   下载`TSLint`插件
--   可以在项目的根目录下新建`tslint.json`的文件,用来自定义规则
--   在`VSCode`的设置`setting.json`中添加,可以在保存的时候自动格式化代码
+- 下载`TSLint`插件
+- 可以在项目的根目录下新建`tslint.json`的文件,用来自定义规则
+- 在`VSCode`的设置`setting.json`中添加,可以在保存的时候自动格式化代码
 
 ```json
 // 设置为true时，每次保存的时候自动格式化；值设置为false时，代码格式化请按shift+alt+F
@@ -99,4 +99,19 @@ export interface IUserLoginParams extends Pick<IUser, 'userName' | 'password'> {
 "editor.codeActionsOnSave": {
     "source.fixAll": true
 },
+```
+
+### 数据库知识
+
+1. 设置创建时间,新增数据的时候自动设置为当前的时间,字段类型`datetime`并且默认值为`CURRENT_TIMESTAMP`
+2. 设置更新时间,修改数据的时候自动更新为当前的时间,字段类型`timestamp`并且默认值为`CURRENT_TIMESTAMP`
+3. 设置随机的 id,使用到的第三方模块 (`uuid`)[https://www.npmjs.com/package/uuid],首先安装`npm i uuid`
+
+```js
+import { v1 as uuidv1 } from "uuid"
+// a8bc3ca0773611ebb2a49d7360a3bd03
+export const createUUID = () => {
+  const getUUID = uuidv1().replace(/-/g, "")
+  return getUUID
+}
 ```
