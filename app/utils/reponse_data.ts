@@ -35,3 +35,16 @@ export const data_success = (data: any = [], msg = "请求成功") => {
 export const data_failed = (code = 100, error = [], msg = "请求失败") => {
   return { code, error, msg, data: [] }
 }
+
+/** 返回的表格的数据 */
+export const data_table_success = (data: any[] = [], pageNum: number, pageSize: number) => {
+  const total = 0
+  return {
+    code: 0,
+    data,
+    pageNum,
+    pageSize,
+    total,
+    msg: "请求成功",
+  }
+}

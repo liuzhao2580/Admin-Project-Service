@@ -93,7 +93,7 @@ export interface IUserLoginParams extends Pick<IUser, "userName" | "password"> {
 - 在`VSCode`的设置`setting.json`中添加,可以在保存的时候自动格式化代码
 
 ```json
-// 设置为true时，每次保存的时候自动格式化；值设置为false时，代码格式化请按shift+alt+F
+// 设置为true时，每次保存的时候自动格式化；值设置为 false 时，代码格式化请按shift+alt+F
 "editor.formatOnSave": true,
 // 每次保存的时候将代码按eslint和tslint格式进行修复
 "editor.codeActionsOnSave": {
@@ -105,7 +105,7 @@ export interface IUserLoginParams extends Pick<IUser, "userName" | "password"> {
 
 1. 设置创建时间,新增数据的时候自动设置为当前的时间,字段类型`datetime`并且默认值为`CURRENT_TIMESTAMP`
 2. 设置更新时间,修改数据的时候自动更新为当前的时间,字段类型`timestamp`并且默认值为`CURRENT_TIMESTAMP`
-3. 设置随机的 id,使用到的第三方模块 (`uuid`)[https://www.npmjs.com/package/uuid],首先安装`npm i uuid`
+3. 设置随机的 id,使用到的第三方模块 [`uuid`](https://www.npmjs.com/package/uuid),首先安装`npm i uuid`
 
 ```js
 import { v1 as uuidv1 } from "uuid"
