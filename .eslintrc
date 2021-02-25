@@ -1,22 +1,28 @@
 // https://eslint.bootcss.com/docs/user-guide/configuring 中文文档地址
 {
-    "env": {
-        "node": true,
-        "browser": true,
-        "commonjs": true,
-        "es6": true
-    },
-    "rules": {},
-    "overrides": [
-        {
-            "files": ["*.ts"],
-            "parser": "@typescript-eslint/parser",
-            "plugins": ["@typescript-eslint"],
-            "extends": "plugin:@typescript-eslint/recommended",
-            "rules": {
-                "@typescript-eslint/explicit-module-boundary-types": "off",
-                "@typescript-eslint/no-explicit-any": ["off", { "ignoreRestArgs": false }]
-            }
-        }
-    ]
+  "env": {
+    "node": true,
+    "browser": true,
+    "commonjs": true,
+    "es6": true
+  },
+  "rules": {
+    "no-console": "off",
+    "no-await-in-loop": "warn",
+    "require-await": "off",
+    "indent": ["warn", 2, { "SwitchCase": 1 }],
+    "eqeqeq": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "extends": "plugin:@typescript-eslint/recommended",
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": ["off", { "ignoreRestArgs": false }]
+      }
+    }
+  ]
 }
