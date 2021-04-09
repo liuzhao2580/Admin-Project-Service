@@ -1,5 +1,10 @@
 import { Controller } from "egg"
-import { no_data_success, no_data_failed, data_failed, data_success } from "../utils/reponse_data"
+import {
+  no_data_success,
+  no_data_failed,
+  data_failed,
+  data_success,
+} from "../utils/reponse_data"
 import { IArticleInsert } from "@/typescript/interface/article/article-config.interface"
 
 export default class ArticleController extends Controller {
@@ -102,9 +107,13 @@ export default class ArticleController extends Controller {
         userId: params.userId,
       }
       // 首先确定 文章和用户是否匹配
-      const confirm_result = await service.article.article_confirm(confirm_params)
+      const confirm_result = await service.article.article_confirm(
+        confirm_params,
+      )
       if (confirm_result.length) {
-        const update_result = await service.article.article_update(ctx.request.body)
+        const update_result = await service.article.article_update(
+          ctx.request.body,
+        )
         // 修改成功
         if (update_result.affectedRows === 1) {
           ctx.body = no_data_success("修改成功")
@@ -161,17 +170,22 @@ export default class ArticleController extends Controller {
       function type_looper(data, up_data: any[] = [], level = 1) {
         let get_category: any[] = []
         // 上一级类别
-        const get_up_data = data.filter((item) => item.level === level)
+        const get_up_data = data.filter(item => item.level === level)
         // 说明能找到相应的数据
         if (get_up_data.length > 0) {
           // 说明data 中还存在的下级类别
           if (get_up_data.length < data.length) {
             // 首先获取的数据为下一级
             const get_down_data = data.slice(get_up_data.length)
-            const respon_data: any[] = type_looper(get_down_data, get_up_data, level + 1)
-            if (respon_data.some((item) => !item.parent_id)) get_category = respon_data
-            up_data.forEach((up_item) => {
-              const getFlag = respon_data.filter((down_item) => {
+            const respon_data: any[] = type_looper(
+              get_down_data,
+              get_up_data,
+              level + 1,
+            )
+            if (respon_data.some(item => !item.parent_id))
+              get_category = respon_data
+            up_data.forEach(up_item => {
+              const getFlag = respon_data.filter(down_item => {
                 return up_item.id === down_item.parent_id
               })
               if (getFlag.length > 0) {
@@ -188,8 +202,8 @@ export default class ArticleController extends Controller {
           }
           // 说明 当前的类别已经是最后的
           else if (get_up_data.length === data.length) {
-            up_data.forEach((up_item) => {
-              const getFlag = get_up_data.filter((down_item) => {
+            up_data.forEach(up_item => {
+              const getFlag = get_up_data.filter(down_item => {
                 return up_item.id === down_item.parent_id
               })
               if (getFlag.length > 0) {
@@ -219,8 +233,8 @@ export default class ArticleController extends Controller {
     if (result.length) {
       // 用来记录当前的索引，从-1开始
       let times = -1
-      result.forEach((item) => {
-        const getArr = result_arr.find((result_item) => {
+      result.forEach(item => {
+        const getArr = result_arr.find(result_item => {
           return item.first_id === result_item.id
         })
         // 说明找到了相符的数据，代表是子节点，需要push

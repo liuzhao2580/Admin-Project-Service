@@ -1,4 +1,7 @@
-import { IArticleBasic, IArticleCategory } from "@/typescript/database/article.interface"
+import {
+  IArticleBasic,
+  IArticleCategory,
+} from "@/typescript/database/article.interface"
 import { IUser } from "@/typescript/database/user.interface"
 import { Service } from "egg"
 import { createUUID } from "../utils/tool"
@@ -7,7 +10,9 @@ export default class ArticleService extends Service {
   // 文章列表 获取所有数据
   async findAllList() {
     const { app } = this
-    const result = await app.mysql.select<IArticleBasic>("article", { where: { is_delete: 0 } })
+    const result = await app.mysql.select<IArticleBasic>("article", {
+      where: { is_delete: 0 },
+    })
     return result
   }
   // 查询该文章和该用户是否匹配，判断文章是否被该用户创建
@@ -37,13 +42,19 @@ export default class ArticleService extends Service {
     const id = createUUID()
     const { category_parentId, article_categoryId, userId } = params
     // 一级分类的数据
-    const getParentCategory = await app.mysql.select<IArticleCategory>("article_first_category", {
-      where: { id: category_parentId },
-    })
+    const getParentCategory = await app.mysql.select<IArticleCategory>(
+      "article_first_category",
+      {
+        where: { id: category_parentId },
+      },
+    )
     // 二级分类的数据
-    const getCategory = await app.mysql.select<IArticleCategory>("article_sec_category", {
-      where: { parent_id: category_parentId, id: article_categoryId },
-    })
+    const getCategory = await app.mysql.select<IArticleCategory>(
+      "article_sec_category",
+      {
+        where: { parent_id: category_parentId, id: article_categoryId },
+      },
+    )
     // 获取创建文章用户的数据
     const userResult = (await app.mysql.query<IUser>(
       `SELECT id as userId,userName,avatar,nickName from user WHERE id = ${userId}`,
@@ -135,7 +146,7 @@ export default class ArticleService extends Service {
     const { id, level } = params
     // 设置 级别的范围 最大三级 最小一级
     const levelData = [1, 2, 3]
-    const getLevel = levelData.find((item) => item === level)
+    const getLevel = levelData.find(item => item === level)
     const query_params = {
       where: getLevel && id ? { parent_id: id } : {},
     }

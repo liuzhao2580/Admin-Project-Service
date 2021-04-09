@@ -1,5 +1,4 @@
-import { Controller } from 'egg'
+import { Controller } from "egg"
 export default class Gadget extends Controller {
-    async get_Weather() {}
+  async get_Weather() {}
 }
-
